@@ -17,6 +17,9 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
+all-local:
+	.utils/stamp.sh
+
 EXTRA_DIST = bootstrap.sh
 
 SUBDIRS = src

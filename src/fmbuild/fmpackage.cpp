@@ -19,4 +19,4 @@
 
 #include "fmbuild.hpp"
 
-constexpr PACKAGE_NAME = "Fumes Client"	// PACKAGE_NAME set by stamp.sh
+constexpr char *PACKAGE_NAME = "Fumes Client";	// PACKAGE_NAME set by stamp.sh

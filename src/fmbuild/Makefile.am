@@ -17,6 +17,9 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
+AM_CXXFLAGS = @FM_CXXFLAGS@
+AM_LDFLAGS = @FM_LDFLAGS@
+
 noinst_LTLIBRARIES = libfmbuild.la
 libfmbuild_la_SOURCES = fmpackage.cpp fmversion.cpp
 

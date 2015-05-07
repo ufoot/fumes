@@ -17,12 +17,14 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
+#include <string>
+
 namespace fumes {
   int get_version_major();
   int get_version_minor();
-  string get_version_stamp();
-  string get_package_tarname();
-  string get_package_name();
-  string get_package_email();
-  string get_package_url();
+  std::string get_version_stamp();
+  std::string get_package_tarname();
+  std::string get_package_name();
+  std::string get_package_email();
+  std::string get_package_url();
 }
