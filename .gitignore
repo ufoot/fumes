@@ -1,0 +1,9 @@
+autom4te.cache
+ChangeLog
+configure
+config.log
+config.status
+Makefile
+Makefile.in
+*~
+*#*
