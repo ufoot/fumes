@@ -17,22 +17,7 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
-AC_INIT([Fumes Client],[0.0.0],[ufoot@ufoot.org],[fumes],[https://github.com/ufoot/fumes])
-AC_CANONICAL_BUILD
-AC_CANONICAL_HOST
-AC_CANONICAL_TARGET
+EXTRA_DIST = bootstrap.sh
 
-AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE
-AM_CONFIG_HEADER([config.h])
-AC_PROG_CC
-AC_PROG_CXX
-AC_PROG_LIBTOOL
-
-dnl Headers, some are optional
-AC_CHECK_HEADERS(stdlib.h)
-
-AC_OUTPUT([Makefile
-	src/Makefile.am
-])
+SUBDIRS = src
 

@@ -17,6 +17,12 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
-#include "fmbuild.hpp"
-
-constexpr PACKAGE_NAME = "Fumes Client"	// PACKAGE_NAME set by stamp.sh
+namespace fumes {
+  int get_version_major();
+  int get_version_minor();
+  string get_version_stamp();
+  string get_package_tarname();
+  string get_package_name();
+  string get_package_email();
+  string get_package_url();
+}

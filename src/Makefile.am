@@ -17,5 +17,8 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
-# todo ...
+AM_CXXFLAGS = @FM_CXXFLAGS@
+AM_LDFLAGS = @FM_LDFLAGS@
+
+SUBDIRS = fmbuild
 
