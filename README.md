@@ -35,7 +35,7 @@ Experimental. Unstable. Under heavy work. Use at your own risks. Period.
 News
 ====
 
-* April 2015 : started an empty project on github.
+* May 2015 : started an empty project on github.
 
 Authors
 =======
