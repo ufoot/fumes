@@ -19,23 +19,30 @@
 
 #include "fmbuild.hpp"
 
-namespace fmbuild {
-constexpr int VERSION_MAJOR = 0;	// VERSION_MAJOR set by stamp.sh
-constexpr int VERSION_MINOR = 1;	// VERSION_MINOR set by stamp.sh
-constexpr char VERSION_STAMP[] = "develop";	// VERSION_STAMP set by stamp.sh
+namespace fmbuild
+{
+  constexpr int VERSION_MAJOR = 0;	// VERSION_MAJOR set by stamp.sh
+  constexpr int VERSION_MINOR = 1;	// VERSION_MINOR set by stamp.sh
+  constexpr char VERSION_STAMP[] = "11";	// VERSION_STAMP set by stamp.sh
 }
 
-int fmbuild::get_version_major() {
+int
+fmbuild::get_version_major ()
+{
   return fmbuild::VERSION_MAJOR;
 }
 
-int fmbuild::get_version_minor() {
+int
+fmbuild::get_version_minor ()
+{
   return fmbuild::VERSION_MINOR;
 }
 
-std::string fmbuild::get_version_stamp() {
-  std::string s={fmbuild::VERSION_STAMP};
-  
+std::string fmbuild::get_version_stamp ()
+{
+  std::string s =
+  {
+  fmbuild::VERSION_STAMP};
+
   return s;
 }
-
