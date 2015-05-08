@@ -5,8 +5,12 @@
 /config.status
 /stamp-h1
 /config.h
+/doc/doxygen/html
 Makefile
 Makefile.in
+doxygen.cfg
+doxygen.dummy
+doxygen_sqlite3.db
 *~
 *#*
 .deps

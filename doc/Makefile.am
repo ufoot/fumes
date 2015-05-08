@@ -17,7 +17,5 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
-EXTRA_DIST = bootstrap.sh
-
-SUBDIRS = src doc
+SUBDIRS = doxygen
 

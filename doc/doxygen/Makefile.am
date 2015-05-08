@@ -17,7 +17,15 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
-EXTRA_DIST = bootstrap.sh
+if FM_DOXYGEN
+all-local: doxygen.dummy
+endif # FM_DOXYGEN
 
-SUBDIRS = src doc
+# dependency on doxygen.cfg.in and not doxygen.cfg to avoid too many builds
+doxygen.dummy: doxygen.cfg.in
+	export FM_DOXYGEN_INPUT=${top_srcdir}/src ; if test -f doxygen.cfg ; then doxygen doxygen.cfg ; fi
+	touch $@
+
+clean-local:
+	rm -rf html xml latex doxygen.dummy doxygen_sqlite3.db
 

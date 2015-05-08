@@ -44,10 +44,54 @@ AC_SUBST(FM_LDFLAGS)
 dnl Headers, some are optional
 AC_CHECK_HEADERS(stdlib.h)
 
+dnl To generate code documentation
+fm_doxygen=yes
+
+AC_ARG_ENABLE([doxygen], AS_HELP_STRING([--enable-doxygen],[enable doxygen default=yes]), [enable_doxygen=$enableval], [enable_doxygen=yes])
+if test x$enable_doxygen != xyes; then
+    fm_doxygen=no
+fi
+
+AC_CHECK_PROG(FM_DOXYGEN, doxygen, yes, no)
+if test x${FM_DOXYGEN} != xyes; then
+    fm_doxygen=no
+    AC_MSG_WARN([
+		   *** Fumes recommends Doxygen (http://www.stack.nl/~dimitri/doxygen/)
+	       ])
+fi
+
+FM_DOXYGEN_HAVE_DOT=YES
+AC_CHECK_PROG(DOT, dot, yes, no)
+if test x${DOT} != xyes; then
+    AC_MSG_WARN([
+		   *** Fumes recommends dot (http://www.graphviz.org/)
+	       ])
+    FM_DOXYGEN_HAVE_DOT=NO
+fi
+
+if test x$fm_doxygen != xyes; then
+    FM_DOXYGEN_HAVE_DOT=NO
+fi
+
+AC_SUBST(FM_DOXYGEN_HAVE_DOT)
+
+FM_DOXYGEN_SRCDIR=`readlink -f ${srcdir}`
+
+AC_SUBST(FM_DOXYGEN_SRCDIR)
+
+if test x${fm_doxygen} != xyes ; then
+    AC_MSG_WARN(["No Doxygen support"])
+fi
+AM_CONDITIONAL(FM_DOXYGEN, test x${fm_doxygen} = xyes)
+
+dnl Generating files
 AC_CONFIG_FILES([Makefile
-	src/Makefile
-	src/fmbuild/Makefile
-])
+		 src/Makefile
+		 src/fmbuild/Makefile
+		 doc/Makefile
+		 doc/doxygen/Makefile
+		 doc/doxygen/doxygen.cfg
+		])
 
 AC_OUTPUT
 
