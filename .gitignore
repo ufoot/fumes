@@ -5,6 +5,7 @@
 /config.status
 /stamp-h1
 /config.h
+/libtool
 /doc/doxygen/html
 Makefile
 Makefile.in

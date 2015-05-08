@@ -19,5 +19,8 @@
 
 EXTRA_DIST = bootstrap
 
+distclean-local:
+	find . -name "*~" -exec rm -f "{}" \;
+
 SUBDIRS = src doc
 
