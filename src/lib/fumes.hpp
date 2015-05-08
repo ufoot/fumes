@@ -17,5 +17,9 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
+#ifndef FUMES_HPP
+#define FUMES_HPP
+
 #include "fmbuild/fmbuild.hpp"
 
+#endif // FUMES_HPP

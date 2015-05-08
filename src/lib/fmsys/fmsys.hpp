@@ -17,20 +17,11 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
-#ifndef FMBUILD_HPP
-#define FMBUILD_HPP
+#ifndef FMSYS_HPP
+#define FMSYS_HPP
 
-#include <string>
+namespace fmsys {
 
-namespace fmbuild {
-  int get_version_major();
-  int get_version_minor();
-  std::string get_version_stamp();
-  std::string get_package_tarname();
-  std::string get_package_name();
-  std::string get_package_email();
-  std::string get_package_url();
 }
 
-#endif // FMBUILD_HPP
-
+#endif // FMSYS_HPP

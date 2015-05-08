@@ -100,6 +100,7 @@ AC_CONFIG_FILES([Makefile
 		 src/Makefile
 		 src/lib/Makefile
 		 src/lib/fmbuild/Makefile
+		 src/lib/fmsys/Makefile
 		 doc/Makefile
 		 doc/doxygen/Makefile
 		 doc/doxygen/doxygen.cfg
