@@ -19,4 +19,7 @@
 
 #include "fmbuild.hpp"
 
-constexpr char *PACKAGE_NAME = "Fumes Client";	// PACKAGE_NAME set by stamp.sh
+constexpr char PACKAGE_TARNAME[] = "fumes";	// PACKAGE_TARNAME set by stamp.sh
+constexpr char PACKAGE_NAME[] = "Fumes Client";	// PACKAGE_NAME set by stamp.sh
+constexpr char PACKAGE_EMAIL[] = "ufoot@ufoot.org";	// PACKAGE_EMAIL set by stamp.sh
+constexpr char PACKAGE_URL[] = "http://www.ufoot.org/liquidwar/v7/fumes";	// PACKAGE_URL set by stamp.sh

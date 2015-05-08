@@ -19,7 +19,7 @@
 
 #include <string>
 
-namespace fumes {
+namespace fmbuild {
   int get_version_major();
   int get_version_minor();
   std::string get_version_stamp();

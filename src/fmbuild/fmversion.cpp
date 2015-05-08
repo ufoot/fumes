@@ -18,3 +18,7 @@
 // Contact author: ufoot@ufoot.org
 
 #include "fmbuild.hpp"
+
+constexpr int VERSION_MAJOR = 0;	// VERSION_MAJOR set by stamp.sh
+constexpr int VERSION_MINOR = 1;	// VERSION_MINOR set by stamp.sh
+constexpr char VERSION_STAMP[] = "develop";	// VERSION_STAMP set by stamp.sh
