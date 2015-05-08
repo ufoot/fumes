@@ -26,10 +26,10 @@ AC_CANONICAL_TARGET
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER([config.h]) 
-#AC_PROG_CC
+AC_LANG_CPLUSPLUS
 AC_PROG_CXX
 AC_USE_SYSTEM_EXTENSIONS
-AC_LIBTOOL_DLOPEN
+#AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
 #AM_GNU_GETTEXT([external])
 #AM_GNU_GETTEXT_VERSION([0.17])
@@ -43,6 +43,17 @@ AC_SUBST(FM_LDFLAGS)
 
 dnl Headers, some are optional
 AC_CHECK_HEADERS(stdlib.h)
+
+dnl Ogre3d
+dnl http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Setting+Up+An+Application+-+Autotools+-+Linux
+
+PKG_CHECK_MODULES(OGRE, [OGRE >= 1.7])
+AC_SUBST(OGRE_CFLAGS)
+AC_SUBST(OGRE_LIBS)
+
+PKG_CHECK_MODULES(OIS, [OIS >= 1.3])
+AC_SUBST(OIS_CFLAGS)
+AC_SUBST(OIS_LIBS)
 
 dnl To generate code documentation
 fm_doxygen=yes
