@@ -50,8 +50,8 @@ find_configure_ac () {
 }
 
 find_fmversion_cpp () {
-    if [ -f src/fmbuild/fmversion.cpp ] ; then
-	    FMVERSION_CPP="src/fmbuild/fmversion.cpp"
+    if [ -f src/lib/fmbuild/fmversion.cpp ] ; then
+	    FMVERSION_CPP="src/lib/fmbuild/fmversion.cpp"
 	    if [ -f ${CONFIGURE_AC} ] ; then
             true
 	    else
@@ -59,14 +59,14 @@ find_fmversion_cpp () {
             exit 2
 	    fi
     else
-	    echo "unable to find src/fmbuild/fmversion.cpp"
+	    echo "unable to find src/lib/fmbuild/fmversion.cpp"
 	    exit 1
     fi
 }
 
 find_fmpackage_cpp () {
-    if [ -f src/fmbuild/fmpackage.cpp ] ; then
-	    FMPACKAGE_CPP="src/fmbuild/fmpackage.cpp"
+    if [ -f src/lib/fmbuild/fmpackage.cpp ] ; then
+	    FMPACKAGE_CPP="src/lib/fmbuild/fmpackage.cpp"
 	    if [ -f ${CONFIGURE_AC} ] ; then
             true
 	    else
@@ -74,7 +74,7 @@ find_fmpackage_cpp () {
             exit 2
 	    fi
     else
-	    echo "unable to find src/fmbuild/fmpackage.cpp"
+	    echo "unable to find src/lib/fmbuild/fmpackage.cpp"
 	    exit 1
     fi
 }
@@ -107,7 +107,7 @@ calc_branch () {
 
 calc_commits () {
     if [ "x${VERSION_BRANCH}" = "x" ] ; then
-	SRC_CXX=$(ls -d src/fm* | grep -v "fmbuild" | sort | tr "\n" " ")
+	SRC_CXX=$(ls -d src/lib/fm* | grep -v "fmbuild" | sort | tr "\n" " ")
 	VERSION_COMMITS=$(git log --oneline --color=never -- ${SRC_CXX} | wc -l)
     else
 	VERSION_COMMITS=

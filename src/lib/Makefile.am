@@ -20,5 +20,18 @@
 AM_CXXFLAGS = @FM_CXXFLAGS@
 AM_LDFLAGS = @FM_LDFLAGS@
 
-SUBDIRS = lib
+noinst_LTLIBRARIES = libfumes_s.la
+FM_FILES = 
+FM_LIBS = fmbuild/libfmbuild.la
+libfumes_s_la_SOURCES = $(FM_FILES)
+libfumes_s_la_LIBADD = $(FM_LIBS)
+
+lib_LTLIBRARIES = libfumes.la
+libfumes_la_SOURCES = $(FM_FILES)
+libfumes_la_LIBADD = $(FM_LIBS)
+libfumes_la_LDFLAGS = -release @PACKAGE_VERSION@ @FM_LDFLAGS@
+libfumesdir = $(includedir)/@PACKAGE_TARNAME@
+libfumes_HEADERS = fumes.hpp
+
+SUBDIRS = fmbuild
 
