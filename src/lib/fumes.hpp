@@ -21,5 +21,6 @@
 #define FUMES_HPP
 
 #include "fmbuild/fmbuild.hpp"
+#include "fmbuild/fmsys.hpp"
 
 #endif // FUMES_HPP

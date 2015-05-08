@@ -20,8 +20,26 @@
 #ifndef FMSYS_HPP
 #define FMSYS_HPP
 
-namespace fmsys {
+#include <string>
+#include <ostream>
+#include <fstream>
 
+namespace fmsys {
+  class log {
+    std::string f;
+    std::ofstream *os;
+  public:
+    log(std::string &filename);
+    ~log();
+    std::ostream & get();
+};
+
+  std::ostream & crit();
+  std::ostream & error();
+  std::ostream & warning();
+  std::ostream & notice();
+  std::ostream & info();
+  std::ostream & debug();
 }
 
 #endif // FMSYS_HPP

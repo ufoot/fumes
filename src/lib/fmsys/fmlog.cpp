@@ -19,4 +19,15 @@
 
 #include "fmsys.hpp"
 
-int dummy=0;
+#include <iostream>
+
+fmsys::log::log(std::string &filename) : f{filename},os{new std::ofstream(filename, std::ofstream::out)} {
+  if (os == nullptr) {
+    std::cerr<<"unable to open log "<<filename;
+  }
+}
+
+fmsys::log::~log() {
+  delete os;
+}
+
