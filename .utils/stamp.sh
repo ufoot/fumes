@@ -107,8 +107,8 @@ calc_branch () {
 
 calc_commits () {
     if [ "x${VERSION_BRANCH}" = "x" ] ; then
-	SRC_GO=$(ls -d fm* | grep -v "fmbuild" | sort | tr "\n" " ")
-	VERSION_COMMITS=$(git log --oneline --color=never -- ${SRC_GO} | wc -l)
+	SRC_CXX=$(ls -d src/fm* | grep -v "fmbuild" | sort | tr "\n" " ")
+	VERSION_COMMITS=$(git log --oneline --color=never -- ${SRC_CXX} | wc -l)
     else
 	VERSION_COMMITS=
     fi
@@ -119,7 +119,7 @@ do_patch () {
     VERSION_DOT=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_STAMP}
     if grep -q ${VERSION_DOT} ${CONFIGURE_AC} ; then
         echo "current version is ${VERSION_DOT}"
-        touch ${CONFIGURE_AC}
+        #touch ${CONFIGURE_AC}
     else
         echo "patching ${FMPACKAGE_CPP} with package tarname=${PACKAGE_TARNAME} name=${PACKAGE_NAME} email=${PACKAGE_EMAIL} url=${PACKAGE_URL}"
         sed -i "s/constexpr.*\/\/.*PACKAGE_TARNAME.*stamp.sh/constexpr char PACKAGE_TARNAME[] = \"${PACKAGE_TARNAME}\"; \/\/ PACKAGE_TARNAME set by stamp.sh/g" ${FMPACKAGE_CPP}
