@@ -30,8 +30,8 @@ fi
 LINE_LENGTH=159
 
 # Indent C++ file twice to avoid weird diffs (ping-pong effect)
-find . -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
-find . -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
-find . -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
-find . -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
+find src -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
+find src -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
+find src -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
+find src -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
 
