@@ -19,47 +19,34 @@
 
 #include "fmbuild.hpp"
 
-namespace fmbuild
-{
-  constexpr char PACKAGE_TARNAME[] = "fumes";	// PACKAGE_TARNAME set by stamp.sh
-  constexpr char PACKAGE_NAME[] = "Fumes Client";	// PACKAGE_NAME set by stamp.sh
-  constexpr char PACKAGE_EMAIL[] = "ufoot@ufoot.org";	// PACKAGE_EMAIL set by stamp.sh
-  constexpr char PACKAGE_URL[] = "http://www.ufoot.org/liquidwar/v7/fumes";	// PACKAGE_URL set by stamp.sh
+namespace fmbuild {
+// constants set by stamp.sh
+constexpr char PACKAGE_TARNAME[] = "fumes";
+constexpr char PACKAGE_NAME[] = "Fumes Client";
+constexpr char PACKAGE_EMAIL[] = "ufoot@ufoot.org";
+constexpr char PACKAGE_URL[] = "http://www.ufoot.org/liquidwar/v7/fumes";
 }
 
-std::string
-fmbuild::get_package_tarname ()
-{
-  std::string s =
-  {
-  fmbuild::PACKAGE_TARNAME};
+std::string fmbuild::get_package_tarname() {
+  std::string s = {fmbuild::PACKAGE_TARNAME};
 
   return s;
 }
 
-std::string fmbuild::get_package_name ()
-{
-  std::string s =
-  {
-  fmbuild::PACKAGE_NAME};
+std::string fmbuild::get_package_name() {
+  std::string s = {fmbuild::PACKAGE_NAME};
 
   return s;
 }
 
-std::string fmbuild::get_package_email ()
-{
-  std::string s =
-  {
-  fmbuild::PACKAGE_EMAIL};
+std::string fmbuild::get_package_email() {
+  std::string s = {fmbuild::PACKAGE_EMAIL};
 
   return s;
 }
 
-std::string fmbuild::get_package_url ()
-{
-  std::string s =
-  {
-  fmbuild::PACKAGE_URL};
+std::string fmbuild::get_package_url() {
+  std::string s = {fmbuild::PACKAGE_URL};
 
   return s;
 }

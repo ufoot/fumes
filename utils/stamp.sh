@@ -122,16 +122,16 @@ do_patch () {
         #touch ${CONFIGURE_AC}
     else
         echo "patching ${FMPACKAGE_CPP} with package tarname=${PACKAGE_TARNAME} name=${PACKAGE_NAME} email=${PACKAGE_EMAIL} url=${PACKAGE_URL}"
-        sed -i "s/constexpr.*\/\/.*PACKAGE_TARNAME.*stamp.sh/constexpr char PACKAGE_TARNAME[] = \"${PACKAGE_TARNAME}\"; \/\/ PACKAGE_TARNAME set by stamp.sh/g" ${FMPACKAGE_CPP}
-        sed -i "s/constexpr.*\/\/.*PACKAGE_NAME.*stamp.sh/constexpr char PACKAGE_NAME[] = \"${PACKAGE_NAME}\"; \/\/ PACKAGE_NAME set by stamp.sh/g" ${FMPACKAGE_CPP}
-        sed -i "s/constexpr.*\/\/.*PACKAGE_EMAIL.*stamp.sh/constexpr char PACKAGE_EMAIL[] = \"${PACKAGE_EMAIL}\"; \/\/ PACKAGE_EMAIL set by stamp.sh/g" ${FMPACKAGE_CPP}
-        sed -i "s/constexpr.*\/\/.*PACKAGE_URL.*stamp.sh/constexpr char PACKAGE_URL[] = \"${PACKAGE_URL}\"; \/\/ PACKAGE_URL set by stamp.sh/g" ${FMPACKAGE_CPP}
+        sed -i "s/constexpr.*PACKAGE_TARNAME.*/constexpr char PACKAGE_TARNAME[] = \"${PACKAGE_TARNAME}\";/g" ${FMPACKAGE_CPP}
+        sed -i "s/constexpr.*PACKAGE_NAME.*/constexpr char PACKAGE_NAME[] = \"${PACKAGE_NAME}\";/g" ${FMPACKAGE_CPP}
+        sed -i "s/constexpr.*PACKAGE_EMAIL.*/constexpr char PACKAGE_EMAIL[] = \"${PACKAGE_EMAIL}\";/g" ${FMPACKAGE_CPP}
+        sed -i "s/constexpr.*PACKAGE_URL.*/constexpr char PACKAGE_URL[] = \"${PACKAGE_URL}\";/g" ${FMPACKAGE_CPP}
         if which indent > /dev/null ; then indent ${FMPACKAGE_CPP} ; fi
         if which indent > /dev/null ; then indent ${FMPACKAGE_CPP} ; fi
         echo "patching ${FMVERSION_CPP} with version major=${VERSION_MAJOR} minor=${VERSION_MINOR} stamp=${VERSION_STAMP}"
-        sed -i "s/constexpr.*\/\/.*VERSION_MAJOR.*stamp.sh/constexpr int VERSION_MAJOR = ${VERSION_MAJOR}; \/\/ VERSION_MAJOR set by stamp.sh/g" ${FMVERSION_CPP}
-        sed -i "s/constexpr.*\/\/.*VERSION_MINOR.*stamp.sh/constexpr int VERSION_MINOR = ${VERSION_MINOR}; \/\/ VERSION_MINOR set by stamp.sh/g" ${FMVERSION_CPP}
-        sed -i "s/constexpr.*\/\/.*VERSION_STAMP.*stamp.sh/constexpr char VERSION_STAMP[] = \"${VERSION_STAMP}\"; \/\/ VERSION_STAMP set by stamp.sh/g" ${FMVERSION_CPP}
+        sed -i "s/constexpr.*VERSION_MAJOR.*/constexpr int VERSION_MAJOR = ${VERSION_MAJOR};/g" ${FMVERSION_CPP}
+        sed -i "s/constexpr.*VERSION_MINOR.*/constexpr int VERSION_MINOR = ${VERSION_MINOR};/g" ${FMVERSION_CPP}
+        sed -i "s/constexpr.*VERSION_STAMP.*/constexpr char VERSION_STAMP[] = \"${VERSION_STAMP}\";/g" ${FMVERSION_CPP}
         if which indent > /dev/null ; then indent ${FMVERSION_CPP} ; fi
         if which indent > /dev/null ; then indent ${FMVERSION_CPP} ; fi
         echo "patching ${CONFIGURE_AC} with version ${VERSION_DOT}"
