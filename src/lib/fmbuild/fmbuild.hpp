@@ -22,15 +22,15 @@
 
 #include <string>
 
-namespace fmbuild {
-  int get_version_major();
-  int get_version_minor();
-  std::string get_version_stamp();
-  std::string get_package_tarname();
-  std::string get_package_name();
-  std::string get_package_email();
-  std::string get_package_url();
+namespace fmbuild
+{
+  int get_version_major ();
+  int get_version_minor ();
+    std::string get_version_stamp ();
+    std::string get_package_tarname ();
+    std::string get_package_name ();
+    std::string get_package_email ();
+    std::string get_package_url ();
 }
 
-#endif // FMBUILD_HPP
-
+#endif				// FMBUILD_HPP

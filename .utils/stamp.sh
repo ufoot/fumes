@@ -134,6 +134,7 @@ do_patch () {
         if which indent > /dev/null ; then indent ${FMVERSION_CPP} ; fi
         echo "patching ${CONFIGURE_AC} with version ${VERSION_DOT}"
         sed -i "s/^AC_INIT.*/AC_INIT([${PACKAGE_NAME}],[${VERSION_DOT}],[${PACKAGE_EMAIL}],[${PACKAGE_TARNAME}],[${PACKAGE_URL}])/g" ${CONFIGURE_AC}
+        if which indent > /dev/null && test -x .utils/indent.sh > /dev/null ; then .utils/indent.sh ; fi
     fi
 }
 
