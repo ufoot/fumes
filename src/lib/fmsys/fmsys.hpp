@@ -23,23 +23,25 @@
 #include <string>
 #include <ostream>
 #include <fstream>
+#include <memory>
 
-namespace fmsys {
-  class log {
-    std::string f;
-    std::ofstream *os;
+namespace fmsys
+{
+  class log
+  {
+    std::string file_name;
+    std::unique_ptr < std::ofstream > file_handler;
   public:
-    log(std::string &filename);
-    ~log();
-    std::ostream & get();
-};
+    log (std::string filename);
+    std::ostream * get ();
+  };
 
-  std::ostream & crit();
-  std::ostream & error();
-  std::ostream & warning();
-  std::ostream & notice();
-  std::ostream & info();
-  std::ostream & debug();
+    std::ostream & crit ();
+    std::ostream & error ();
+    std::ostream & warning ();
+    std::ostream & notice ();
+    std::ostream & info ();
+    std::ostream & debug ();
 }
 
-#endif // FMSYS_HPP
+#endif				// FMSYS_HPP

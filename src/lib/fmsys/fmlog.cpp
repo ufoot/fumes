@@ -21,13 +21,53 @@
 
 #include <iostream>
 
-fmsys::log::log(std::string &filename) : f{filename},os{new std::ofstream(filename, std::ofstream::out)} {
-  if (os == nullptr) {
-    std::cerr<<"unable to open log "<<filename;
-  }
+namespace fmsys
+{
+  static log global_log (std::string ("/tmp/todo.txt"));
 }
 
-fmsys::log::~log() {
-  delete os;
+fmsys::log::log (std::string filename):
+  file_name
+{
+filename}, file_handler
+
+{
+std::unique_ptr < std::ofstream > (new std::ofstream (filename, std::ofstream::out))}
+
+{
 }
 
+std::ostream * fmsys::log::get ()
+{
+  return file_handler.get ();
+}
+
+std::ostream & fmsys::crit ()
+{
+  return *(global_log.get ());
+}
+
+std::ostream & fmsys::error ()
+{
+  return *(global_log.get ());
+}
+
+std::ostream & fmsys::warning ()
+{
+  return *(global_log.get ());
+}
+
+std::ostream & fmsys::notice ()
+{
+  return *(global_log.get ());
+}
+
+std::ostream & fmsys::info ()
+{
+  return *(global_log.get ());
+}
+
+std::ostream & fmsys::debug ()
+{
+  return *(global_log.get ());
+}
