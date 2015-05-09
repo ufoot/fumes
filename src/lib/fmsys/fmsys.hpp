@@ -27,13 +27,31 @@
 
 namespace fmsys
 {
-  class log
+  enum class log_priority
+  {
+    CRIT,
+    ERROR,
+    WARNING,
+    NOTICE,
+    INFO,
+    DEBUG
+  };
+
+  class log_backend
   {
     std::string file_name;
     std::unique_ptr < std::ofstream > file_handler;
   public:
-    log (std::string filename);
+    log_backend (std::string filename);
     std::ostream * get ();
+  };
+
+  class log_proxy:std::ostream
+  {
+    log_backend & proxy_backend;
+    log_priority proxy_priority;
+  public:
+      log_proxy (log_backend & backend, log_priority priority);
   };
 
     std::ostream & crit ();
