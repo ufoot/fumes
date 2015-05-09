@@ -27,9 +27,7 @@ static log_backend global_log_backend(std::string("/tmp/todo.txt"));
 
 fmsys::log_backend::log_backend(std::string filename)
     : file_name{filename},
-      file_handler
-
-      {std::unique_ptr<std::ofstream>(
+      file_handler{std::unique_ptr<std::ofstream>(
           new std::ofstream(filename, std::ofstream::out))}
 
 {}
@@ -38,9 +36,7 @@ std::ostream* fmsys::log_backend::get() { return file_handler.get(); }
 
 fmsys::log_proxy::log_proxy(log_backend& backend, log_priority priority)
     : std::ostream(),
-      proxy_backend{backend}
-
-      ,
+      proxy_backend{backend},
       proxy_priority{priority}
 
 {}
