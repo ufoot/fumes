@@ -19,10 +19,10 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
-if [ -d ../.utils ] ; then
+if [ -d ../utils ] ; then
     cd ..
 fi
-if [ ! -d .utils ] ; then
+if [ ! -d utils ] ; then
     echo "$0 should be run in srcdir"
     exit 1
 fi
@@ -136,7 +136,7 @@ do_patch () {
         if which indent > /dev/null ; then indent ${FMVERSION_CPP} ; fi
         echo "patching ${CONFIGURE_AC} with version ${VERSION_DOT}"
         sed -i "s/^AC_INIT.*/AC_INIT([${PACKAGE_NAME}],[${VERSION_DOT}],[${PACKAGE_EMAIL}],[${PACKAGE_TARNAME}],[${PACKAGE_URL}])/g" ${CONFIGURE_AC}
-        if which indent > /dev/null && test -x .utils/indent.sh > /dev/null ; then .utils/indent.sh ; fi
+        if which indent > /dev/null && test -x utils/indent.sh > /dev/null ; then utils/indent.sh ; fi
     fi
 }
 

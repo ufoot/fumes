@@ -97,6 +97,7 @@ AM_CONDITIONAL(FM_DOXYGEN, test x${fm_doxygen} = xyes)
 
 dnl Generating files
 AC_CONFIG_FILES([Makefile
+		 utils/Makefile
 		 src/Makefile
 		 src/lib/Makefile
 		 src/lib/fmbuild/Makefile
@@ -108,5 +109,5 @@ AC_CONFIG_FILES([Makefile
 
 AC_OUTPUT
 
-.utils/stamp.sh
+utils/stamp.sh
 

@@ -19,10 +19,10 @@
 # Fumes homepage: https://github.com/ufoot/fumes
 # Contact author: ufoot@ufoot.org
 
-if [ -d ../.utils ] ; then
+if [ -d ../utils ] ; then
     cd ..
 fi
-if [ ! -d .utils ] ; then
+if [ ! -d utils ] ; then
     echo "$0 should be run in srcdir"
     exit 1
 fi
