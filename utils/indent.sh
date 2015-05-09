@@ -31,14 +31,13 @@ LINE_LENGTH=159
 
 # Indent C++ file twice to avoid weird diffs (ping-pong effect)
 if which indent > /dev/null ; then
-    find src -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
-    find src -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
-    find src -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
-    find src -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
-fi
-
-if which clang-format-3.5 > /dev/null ; then
-    find src -name "*.hpp" -exec clang-format-3.5 -i -style=Google "{}" \;
-    find src -name "*.cpp" -exec clang-format-3.5 -i -style=Google "{}" \;
+    if which clang-format-3.5 > /dev/null ; then
+	find src -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
+	find src -name "*.hpp" -exec indent -l$LINE_LENGTH "{}" \;
+	find src -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
+	find src -name "*.cpp" -exec indent -l$LINE_LENGTH "{}" \;
+	find src -name "*.hpp" -exec clang-format-3.5 -i -style=Google "{}" \;
+	find src -name "*.cpp" -exec clang-format-3.5 -i -style=Google "{}" \;
+    fi
 fi
 
