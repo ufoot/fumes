@@ -25,19 +25,19 @@
 #include <cppunit/TestCase.h>
 
 namespace fmbuild {
-  class package_test : public CppUnit::TestCase {
-  public:
-    package_test(std::string name);
-    
-  void runTest();
-  };
+class package_test : public CppUnit::TestCase {
+ public:
+  package_test(std::string name);
 
-  class version_test : public CppUnit::TestCase {
-  public:
-    version_test(std::string name);
-    
   void runTest();
-  };
+};
+
+class version_test : public CppUnit::TestCase {
+ public:
+  version_test(std::string name);
+
+  void runTest();
+};
 }
 
 #endif  // FMBUILD_TEST_HPP

@@ -37,13 +37,16 @@ class log_backend {
   std::ostream* get();
 };
 
-class log_proxy : public std::ostream {
-  friend std::ostream& operator<<(log_proxy& lp, std::ostream& os);
+class log_proxy : public std::ofstream {
   log_backend& proxy_backend;
   log_priority proxy_priority;
 
  public:
   log_proxy(log_backend& backend, log_priority priority);
+  template <typename T>
+  std::ostream& operator<<(T val) {
+    return (*proxy_backend.get()) << "todo! " << val << "\n";
+  }
 };
 
 extern log_proxy log_crit;

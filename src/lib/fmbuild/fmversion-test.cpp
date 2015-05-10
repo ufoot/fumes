@@ -22,17 +22,19 @@
 #include <cppunit/TestResult.h>
 #include <cppunit/ui/text/TestRunner.h>
 
-fmbuild::version_test::version_test(std::string name) : CppUnit::TestCase(name) {}
+fmbuild::version_test::version_test(std::string name)
+    : CppUnit::TestCase(name) {}
 
 void fmbuild::version_test::runTest() {
-    CPPUNIT_ASSERT(fmbuild::get_version_major() >= 0);
-    CPPUNIT_ASSERT(fmbuild::get_version_minor() > 0);
-    CPPUNIT_ASSERT(fmbuild::get_version_stamp().length() > 0);
+  CPPUNIT_ASSERT(fmbuild::get_version_major() >= 0);
+  CPPUNIT_ASSERT(fmbuild::get_version_minor() > 0);
+  CPPUNIT_ASSERT(fmbuild::get_version_stamp().length() > 0);
 }
 
 int main(int argc, char *argv[]) {
   CppUnit::TextUi::TestRunner runner;
-  fmbuild::version_test *test1 = new fmbuild::version_test(std::string("fmbuild::version"));
+  fmbuild::version_test *test1 =
+      new fmbuild::version_test(std::string("fmbuild::version"));
 
   runner.addTest(test1);
   runner.run();

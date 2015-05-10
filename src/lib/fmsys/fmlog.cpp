@@ -22,32 +22,24 @@
 #include <iostream>
 
 namespace fmsys {
+constexpr char LOG_HEADER[] = "DATE;MESSAGE;...\n";
 static log_backend global_log_backend(std::string("/tmp/todo.txt"));
-fmsys::log_proxy log_crit(global_log_backend, log_priority::CRIT);
-fmsys::log_proxy log_error(global_log_backend, log_priority::ERROR);
-fmsys::log_proxy log_warning(global_log_backend, log_priority::WARNING);
-fmsys::log_proxy log_notice(global_log_backend, log_priority::NOTICE);
-fmsys::log_proxy log_info(global_log_backend, log_priority::INFO);
-fmsys::log_proxy log_debug(global_log_backend, log_priority::DEBUG);
-
-std::ostream& operator<<(log_proxy& lp, std::ostream& os) {
-  std::ostream *pos=lp.proxy_backend.get();
-  (*pos) << os;
-  pos->flush();
-  
-  return lp;
-}
+log_proxy log_crit(global_log_backend, log_priority::CRIT);
+log_proxy log_error(global_log_backend, log_priority::ERROR);
+log_proxy log_warning(global_log_backend, log_priority::WARNING);
+log_proxy log_notice(global_log_backend, log_priority::NOTICE);
+log_proxy log_info(global_log_backend, log_priority::INFO);
+log_proxy log_debug(global_log_backend, log_priority::DEBUG);
 }
 
 fmsys::log_backend::log_backend(std::string filename)
     : file_name{filename},
       file_handler{std::unique_ptr<std::ofstream>(
-          new std::ofstream(filename, std::ofstream::out))} {}
+          new std::ofstream(filename, std::ofstream::out))} {
+  (*file_handler.get()) << fmsys::LOG_HEADER;
+}
 
 std::ostream* fmsys::log_backend::get() { return file_handler.get(); }
 
 fmsys::log_proxy::log_proxy(log_backend& backend, log_priority priority)
-    : std::ostream(),
-      proxy_backend{backend},
-      proxy_priority{priority}
-{}
+    : std::ofstream(), proxy_backend{backend}, proxy_priority{priority} {}

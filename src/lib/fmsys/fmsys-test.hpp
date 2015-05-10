@@ -25,12 +25,12 @@
 #include <cppunit/TestCase.h>
 
 namespace fmsys {
-  class log_test : public CppUnit::TestCase {
-  public:
-    log_test(std::string name);
-    
+class log_test : public CppUnit::TestCase {
+ public:
+  log_test(std::string name);
+
   void runTest();
-  };
+};
 }
 
 #endif  // FMSYS_TEST_HPP
