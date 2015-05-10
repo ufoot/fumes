@@ -23,4 +23,13 @@ AM_LDFLAGS = @FM_LDFLAGS@
 noinst_LTLIBRARIES = libfmbuild.la
 libfmbuild_la_SOURCES = fmpackage.cpp fmversion.cpp
 
+libexec_PROGRAMS = fmbuild-package-test fmbuild-version-test
+fmbuild_package_test_SOURCES = fmpackage-test.cpp
+fmbuild_package_test_LDFLAGS = @CPPUNIT_LIBS@
+fmbuild_package_test_LDADD = libfmbuild.la
+fmbuild_version_test_SOURCES = fmversion-test.cpp
+fmbuild_version_test_LDFLAGS = @CPPUNIT_LIBS@
+fmbuild_version_test_LDADD = libfmbuild.la
+TESTS = fmbuild-package-test fmbuild-version-test
+
 EXTRA_DIST = fmbuild.hpp
