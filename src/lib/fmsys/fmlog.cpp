@@ -31,7 +31,10 @@ fmsys::log_proxy log_info(global_log_backend, log_priority::INFO);
 fmsys::log_proxy log_debug(global_log_backend, log_priority::DEBUG);
 
 std::ostream& operator<<(log_proxy& lp, std::ostream& os) {
-  (*(lp.proxy_backend.get())) << os;
+  std::ostream *pos=lp.proxy_backend.get();
+  (*pos) << os;
+  pos->flush();
+  
   return lp;
 }
 }
@@ -47,5 +50,4 @@ fmsys::log_proxy::log_proxy(log_backend& backend, log_priority priority)
     : std::ostream(),
       proxy_backend{backend},
       proxy_priority{priority}
-
 {}

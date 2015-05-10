@@ -23,4 +23,13 @@ AM_LDFLAGS = @FM_LDFLAGS@
 noinst_LTLIBRARIES = libfmsys.la
 libfmsys_la_SOURCES = fmlog.cpp
 
-EXTRA_DIST = fmsys.hpp
+libexec_PROGRAMS = fmsys-log-test
+fmsys_log_test_SOURCES = fmlog-test.cpp
+fmsys_log_test_LDFLAGS = @cppunit_LIBS@
+fmsys_log_test_LDADD = libfmsys.la
+TESTS = fmsys-log-test
+
+check-local:
+	valgrind ./fmsys-log-test
+
+EXTRA_DIST = fmsys.hpp fmsys-test.hpp
