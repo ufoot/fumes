@@ -58,9 +58,9 @@ AC_SUBST(OIS_LIBS)
 dnl Cppunit
 dnl http://cppunit.sourceforge.net/doc/lastest/cppunit_cookbook.html
 
-PKG_CHECK_MODULES(OIS, [CPPUNIT >= 1.13])
-AC_SUBST(CPPUNIT_CFLAGS)
-AC_SUBST(CPPUNIT_LIBS)
+PKG_CHECK_MODULES(cppunit, [cppunit >= 1.13])
+AC_SUBST(cppunit_CFLAGS)
+AC_SUBST(cppunit_LIBS)
 
 dnl To generate code documentation
 fm_doxygen=yes

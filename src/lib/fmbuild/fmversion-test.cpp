@@ -19,4 +19,25 @@
 
 #include "fmbuild.hpp"
 
-#include <cppunit/Test.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestResult.h>
+#include <cppunit/ui/text/TestRunner.h>
+
+class version_test : public CppUnit::TestCase {
+public:
+  version_test( std::string name ) : CppUnit::TestCase( name ) {}
+
+  void runTest() {
+    CPPUNIT_ASSERT( 1==1);
+  }
+};
+
+int main(int argc, char *argv[]) {
+  CppUnit::TextUi::TestRunner runner;
+  version_test *test1=new version_test(std::string("fmbuild::version") );
+  
+  runner.addTest(test1);
+  runner.run();
+
+  return 0;
+}

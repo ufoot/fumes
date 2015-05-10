@@ -19,4 +19,25 @@
 
 #include "fmbuild.hpp"
 
-#include <cppunit/Test.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestResult.h>
+#include <cppunit/ui/text/TestRunner.h>
+
+class package_test : public CppUnit::TestCase {
+public:
+  package_test( std::string name ) : CppUnit::TestCase( name ) {}
+
+  void runTest() {
+    CPPUNIT_ASSERT( 1==1);
+  }
+};
+
+int main(int argc, char *argv[]) {
+  CppUnit::TextUi::TestRunner runner;
+  package_test *test1=new package_test(std::string("fmbuild::package") );
+  
+  runner.addTest(test1);
+  runner.run();
+
+  return 0;
+}
