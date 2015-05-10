@@ -62,6 +62,9 @@ PKG_CHECK_MODULES(cppunit, [cppunit >= 1.13])
 AC_SUBST(cppunit_CFLAGS)
 AC_SUBST(cppunit_LIBS)
 
+dnl Valgrind
+PKG_CHECK_MODULES(valgrind, [valgrind >= 3.0])
+
 dnl To generate code documentation
 fm_doxygen=yes
 

@@ -32,4 +32,8 @@ fmbuild_version_test_LDFLAGS = @cppunit_LIBS@
 fmbuild_version_test_LDADD = libfmbuild.la
 TESTS = fmbuild-package-test fmbuild-version-test
 
+check-local:
+	valgrind ./fmbuild-package-test
+	valgrind ./fmbuild-version-test
+
 EXTRA_DIST = fmbuild.hpp
