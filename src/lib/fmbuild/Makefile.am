@@ -36,4 +36,4 @@ check-local:
 	valgrind ./fmbuild-package-test
 	valgrind ./fmbuild-version-test
 
-EXTRA_DIST = fmbuild.hpp
+EXTRA_DIST = fmbuild.hpp fmbuild-test.hpp

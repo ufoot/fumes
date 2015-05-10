@@ -17,25 +17,27 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
-#include "fmbuild-test.hpp"
+#ifndef FMBUILD_TEST_HPP
+#define FMBUILD_TEST_HPP
 
-#include <cppunit/TestResult.h>
-#include <cppunit/ui/text/TestRunner.h>
+#include "fmbuild.hpp"
 
-fmbuild::version_test::version_test(std::string name) : CppUnit::TestCase(name) {}
+#include <cppunit/TestCase.h>
 
-void fmbuild::version_test::runTest() {
-    CPPUNIT_ASSERT(fmbuild::get_version_major() >= 0);
-    CPPUNIT_ASSERT(fmbuild::get_version_minor() > 0);
-    CPPUNIT_ASSERT(fmbuild::get_version_stamp().length() > 0);
+namespace fmbuild {
+  class package_test : public CppUnit::TestCase {
+  public:
+    package_test(std::string name);
+    
+  void runTest();
+  };
+
+  class version_test : public CppUnit::TestCase {
+  public:
+    version_test(std::string name);
+    
+  void runTest();
+  };
 }
 
-int main(int argc, char *argv[]) {
-  CppUnit::TextUi::TestRunner runner;
-  fmbuild::version_test *test1 = new fmbuild::version_test(std::string("fmbuild::version"));
-
-  runner.addTest(test1);
-  runner.run();
-
-  return 0;
-}
+#endif  // FMBUILD_TEST_HPP

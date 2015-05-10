@@ -17,27 +17,23 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
-#include "fmbuild.hpp"
+#include "fmbuild-test.hpp"
 
-#include <cppunit/TestCase.h>
 #include <cppunit/TestResult.h>
 #include <cppunit/ui/text/TestRunner.h>
 
-class package_test : public CppUnit::TestCase {
- public:
-  package_test(std::string name) : CppUnit::TestCase(name) {}
+fmbuild::package_test::package_test(std::string name) : CppUnit::TestCase(name) {}
 
-  void runTest() {
-    CPPUNIT_ASSERT(fmbuild::get_package_tarname().length() > 0);
+void fmbuild::package_test::runTest() {
+  CPPUNIT_ASSERT(fmbuild::get_package_tarname().length() > 0);
     CPPUNIT_ASSERT(fmbuild::get_package_name().length() > 0);
     CPPUNIT_ASSERT(fmbuild::get_package_email().length() > 0);
     CPPUNIT_ASSERT(fmbuild::get_package_url().length() > 0);
-  }
-};
+}
 
 int main(int argc, char *argv[]) {
   CppUnit::TextUi::TestRunner runner;
-  package_test *test1 = new package_test(std::string("fmbuild::package"));
+  fmbuild::package_test *test1 = new fmbuild::package_test(std::string("fmbuild::package"));
 
   runner.addTest(test1);
   runner.run();
