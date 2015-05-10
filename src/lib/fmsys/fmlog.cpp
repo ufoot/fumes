@@ -23,14 +23,23 @@
 
 namespace fmsys {
 static log_backend global_log_backend(std::string("/tmp/todo.txt"));
+fmsys::log_proxy log_crit(global_log_backend, log_priority::CRIT);
+fmsys::log_proxy log_error(global_log_backend, log_priority::ERROR);
+fmsys::log_proxy log_warning(global_log_backend, log_priority::WARNING);
+fmsys::log_proxy log_notice(global_log_backend, log_priority::NOTICE);
+fmsys::log_proxy log_info(global_log_backend, log_priority::INFO);
+fmsys::log_proxy log_debug(global_log_backend, log_priority::DEBUG);
+
+std::ostream& operator<<(log_proxy& lp, std::ostream& os) {
+  (*(lp.proxy_backend.get())) << os;
+  return lp;
+}
 }
 
 fmsys::log_backend::log_backend(std::string filename)
     : file_name{filename},
       file_handler{std::unique_ptr<std::ofstream>(
-          new std::ofstream(filename, std::ofstream::out))}
-
-{}
+          new std::ofstream(filename, std::ofstream::out))} {}
 
 std::ostream* fmsys::log_backend::get() { return file_handler.get(); }
 
@@ -40,15 +49,3 @@ fmsys::log_proxy::log_proxy(log_backend& backend, log_priority priority)
       proxy_priority{priority}
 
 {}
-
-std::ostream& fmsys::crit() { return *(global_log_backend.get()); }
-
-std::ostream& fmsys::error() { return *(global_log_backend.get()); }
-
-std::ostream& fmsys::warning() { return *(global_log_backend.get()); }
-
-std::ostream& fmsys::notice() { return *(global_log_backend.get()); }
-
-std::ostream& fmsys::info() { return *(global_log_backend.get()); }
-
-std::ostream& fmsys::debug() { return *(global_log_backend.get()); }

@@ -37,7 +37,8 @@ class log_backend {
   std::ostream* get();
 };
 
-class log_proxy : std::ostream {
+class log_proxy : public std::ostream {
+  friend std::ostream& operator<<(log_proxy& lp, std::ostream& os);
   log_backend& proxy_backend;
   log_priority proxy_priority;
 
@@ -45,12 +46,12 @@ class log_proxy : std::ostream {
   log_proxy(log_backend& backend, log_priority priority);
 };
 
-std::ostream& crit();
-std::ostream& error();
-std::ostream& warning();
-std::ostream& notice();
-std::ostream& info();
-std::ostream& debug();
+extern log_proxy log_crit;
+extern log_proxy log_error;
+extern log_proxy log_warning;
+extern log_proxy log_notice;
+extern log_proxy log_info;
+extern log_proxy log_debug;
 }
 
 #endif  // FMSYS_HPP
