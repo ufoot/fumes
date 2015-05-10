@@ -23,7 +23,7 @@ namespace fmbuild {
 // constants set by stamp.sh
 constexpr int VERSION_MAJOR = 0;
 constexpr int VERSION_MINOR = 1;
-constexpr char VERSION_STAMP[] = "9";
+constexpr char VERSION_STAMP[] = "develop";
 }
 
 int fmbuild::get_version_major() { return fmbuild::VERSION_MAJOR; }
