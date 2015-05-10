@@ -20,3 +20,6 @@ doxygen_sqlite3.db
 *.lo
 *.a
 *.la
+*.log
+*.trs
+*-test

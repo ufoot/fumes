@@ -24,18 +24,20 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 class version_test : public CppUnit::TestCase {
-public:
-  version_test( std::string name ) : CppUnit::TestCase( name ) {}
+ public:
+  version_test(std::string name) : CppUnit::TestCase(name) {}
 
   void runTest() {
-    CPPUNIT_ASSERT( 1==1);
+    CPPUNIT_ASSERT(fmbuild::get_version_major() >= 0);
+    CPPUNIT_ASSERT(fmbuild::get_version_minor() > 0);
+    CPPUNIT_ASSERT(fmbuild::get_version_stamp().length() > 0);
   }
 };
 
 int main(int argc, char *argv[]) {
   CppUnit::TextUi::TestRunner runner;
-  version_test *test1=new version_test(std::string("fmbuild::version") );
-  
+  version_test *test1 = new version_test(std::string("fmbuild::version"));
+
   runner.addTest(test1);
   runner.run();
 
