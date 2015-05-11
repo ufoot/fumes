@@ -17,27 +17,26 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
-#ifndef FMSYS_TEST_HPP
-#define FMSYS_TEST_HPP
+#include "fmsys-test.hpp"
 
-#include "fmsys.hpp"
+#include <cppunit/TestResult.h>
+#include <cppunit/ui/text/TestRunner.h>
 
-#include <cppunit/TestCase.h>
+fmsys::home_test::home_test(std::string name) : CppUnit::TestCase(name) {}
 
-namespace fmsys {
-class home_test : public CppUnit::TestCase {
- public:
-  home_test(std::string name);
+void fmsys::home_test::runTest() {
+  std::string h = fmsys::home(std::string("test"));
 
-  void runTest();
-};
-
-class log_test : public CppUnit::TestCase {
- public:
-  log_test(std::string name);
-
-  void runTest();
-};
+  CPPUNIT_ASSERT(h.length() > 0);
+  fmsys::log_notice << "home: " << h;
 }
 
-#endif  // FMSYS_TEST_HPP
+int main(int argc, char *argv[]) {
+  CppUnit::TextUi::TestRunner runner;
+  fmsys::home_test *test1 = new fmsys::home_test(std::string("fmsys::home"));
+
+  runner.addTest(test1);
+  runner.run();
+
+  return 0;
+}

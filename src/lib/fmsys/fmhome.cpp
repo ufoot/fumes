@@ -17,27 +17,24 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
-#ifndef FMSYS_TEST_HPP
-#define FMSYS_TEST_HPP
-
 #include "fmsys.hpp"
 
-#include <cppunit/TestCase.h>
+#include <cstdlib>
 
 namespace fmsys {
-class home_test : public CppUnit::TestCase {
- public:
-  home_test(std::string name);
-
-  void runTest();
-};
-
-class log_test : public CppUnit::TestCase {
- public:
-  log_test(std::string name);
-
-  void runTest();
-};
+constexpr char ENV_HOME[] = "HOME";
+constexpr char DOT[] = ".";
+constexpr char SEP[] = "/";
 }
 
-#endif  // FMSYS_TEST_HPP
+std::string fmsys::home(std::string program) {
+  char* val_c = getenv(fmsys::ENV_HOME);
+  std::string val_cpp =
+      std::string((val_c == nullptr) ? "" : std::string(val_c));
+
+  std::string path = val_cpp + fmsys::SEP + fmsys::DOT + program;
+
+  // todo : create path if needed
+
+  return path;
+}

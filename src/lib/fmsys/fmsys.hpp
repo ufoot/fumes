@@ -26,6 +26,8 @@
 #include <memory>
 
 namespace fmsys {
+std::string home(std::string program);
+
 enum class log_priority { CRIT, ERROR, WARNING, NOTICE, INFO, DEBUG };
 
 class log_backend {

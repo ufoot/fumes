@@ -21,15 +21,19 @@ AM_CXXFLAGS = @FM_CXXFLAGS@
 AM_LDFLAGS = @FM_LDFLAGS@
 
 noinst_LTLIBRARIES = libfmsys.la
-libfmsys_la_SOURCES = fmlog.cpp
+libfmsys_la_SOURCES = fmhome.cpp fmlog.cpp
 
-libexec_PROGRAMS = fmsys-log-test
+libexec_PROGRAMS = fmsys-home-test fmsys-log-test
+fmsys_home_test_SOURCES = fmhome-test.cpp
+fmsys_home_test_LDFLAGS = @cppunit_LIBS@
+fmsys_home_test_LDADD = libfmsys.la
 fmsys_log_test_SOURCES = fmlog-test.cpp
 fmsys_log_test_LDFLAGS = @cppunit_LIBS@
 fmsys_log_test_LDADD = libfmsys.la
-TESTS = fmsys-log-test
+TESTS = fmsys-home-test fmsys-log-test
 
 check-local:
+	valgrind ./fmsys-home-test
 	valgrind ./fmsys-log-test
 
 EXTRA_DIST = fmsys.hpp fmsys-test.hpp

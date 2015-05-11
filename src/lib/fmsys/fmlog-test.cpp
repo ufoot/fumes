@@ -25,7 +25,6 @@
 fmsys::log_test::log_test(std::string name) : CppUnit::TestCase(name) {}
 
 void fmsys::log_test::runTest() {
-  // fmsys::log_warning<<(std::ostringstream()<<"test");
   fmsys::log_warning << "test";
 
   CPPUNIT_ASSERT(1 == 1);
