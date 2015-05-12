@@ -17,22 +17,28 @@
 // Fumes homepage: https://github.com/ufoot/fumes
 // Contact author: ufoot@ufoot.org
 
-#include "fmsys.hpp"
+#include "fmsys-test.hpp"
 
-#include <cstdlib>
+#include <cppunit/TestResult.h>
+#include <cppunit/ui/text/TestRunner.h>
 
-namespace fmsys {
-constexpr char ENV_HOME[] = "HOME";
+fmsys::path_test::path_test(std::string name) : CppUnit::TestCase(name) {}
+
+void fmsys::path_test::runTest() {
+  std::string s1 = std::string("/foo/bar/hey");
+  std::vector<std::string> v = fmsys::path_split(s1);
+
+  CPPUNIT_ASSERT(v.size() == 4);
+  std::string s2 = fmsys::path_join(v);
+  CPPUNIT_ASSERT(s1 == s2);
 }
 
-std::string fmsys::program_home(std::string program) {
-  char* val_c = getenv(fmsys::ENV_HOME);
-  std::string val_cpp =
-      std::string((val_c == nullptr) ? "" : std::string(val_c));
+int main(int argc, char *argv[]) {
+  CppUnit::TextUi::TestRunner runner;
+  fmsys::path_test *test1 = new fmsys::path_test(std::string("fmsys::path"));
 
-  std::string path = val_cpp + fmsys::PATH_SEP + fmsys::PATH_DOT + program;
+  runner.addTest(test1);
+  runner.run();
 
-  // todo : create path if needed
-
-  return path;
+  return 0;
 }

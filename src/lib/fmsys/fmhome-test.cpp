@@ -25,7 +25,7 @@
 fmsys::home_test::home_test(std::string name) : CppUnit::TestCase(name) {}
 
 void fmsys::home_test::runTest() {
-  std::string h = fmsys::home(std::string("test"));
+  std::string h = fmsys::program_home(std::string("test"));
 
   CPPUNIT_ASSERT(h.length() > 0);
   fmsys::log_notice << "home: " << h;

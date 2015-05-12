@@ -38,6 +38,13 @@ class log_test : public CppUnit::TestCase {
 
   void runTest();
 };
+
+class path_test : public CppUnit::TestCase {
+ public:
+  path_test(std::string name);
+
+  void runTest();
+};
 }
 
 #endif  // FMSYS_TEST_HPP

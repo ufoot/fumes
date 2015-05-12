@@ -24,9 +24,10 @@
 #include <ostream>
 #include <fstream>
 #include <memory>
+#include <vector>
 
 namespace fmsys {
-std::string home(std::string program);
+std::string program_home(std::string program);
 
 enum class log_priority { CRIT, ERROR, WARNING, NOTICE, INFO, DEBUG };
 
@@ -57,6 +58,12 @@ extern log_proxy log_warning;
 extern log_proxy log_notice;
 extern log_proxy log_info;
 extern log_proxy log_debug;
+
+constexpr char PATH_DOT[] = ".";
+constexpr char PATH_SEP[] = "/";
+
+std::string path_join(std::vector<std::string> v);
+std::vector<std::string> path_split(std::string s);
 }
 
 #endif  // FMSYS_HPP
