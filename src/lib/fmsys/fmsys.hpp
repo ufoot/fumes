@@ -62,8 +62,13 @@ extern log_proxy log_debug;
 constexpr char PATH_DOT[] = ".";
 constexpr char PATH_SEP[] = "/";
 
-std::string path_join(std::vector<std::string> v);
-std::vector<std::string> path_split(std::string s);
+std::string path_join(const std::vector<std::string>& v);
+std::vector<std::string> path_split(const std::string& s);
+bool file_exists(const std::string& filename);
+bool dir_exists(const std::string& dirname);
+bool touch(const std::string& dirname);
+bool mkdir(const std::string& dirname);
+bool unlink(const std::string& dirname);
 }
 
 #endif  // FMSYS_HPP

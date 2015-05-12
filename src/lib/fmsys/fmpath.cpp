@@ -19,7 +19,12 @@
 
 #include "fmsys.hpp"
 
-std::string fmsys::path_join(std::vector<std::string> v) {
+#include <stdio.h>
+#include <dirent.h>
+#include <unistd.h>
+#include <sys/stat.h>
+
+std::string fmsys::path_join(const std::vector<std::string>& v) {
   std::string ret;
   bool first = true;
 
@@ -35,7 +40,7 @@ std::string fmsys::path_join(std::vector<std::string> v) {
   return ret;
 }
 
-std::vector<std::string> fmsys::path_split(std::string s) {
+std::vector<std::string> fmsys::path_split(const std::string& s) {
   std::vector<std::string> ret;
   std::string::size_type pos = 0;
   std::string::size_type found = 0;
@@ -60,4 +65,65 @@ std::vector<std::string> fmsys::path_split(std::string s) {
   }
 
   return ret;
+}
+
+bool fmsys::file_exists(const std::string& filename) {
+  int ret = false;
+  FILE* f = nullptr;
+
+  f = ::fopen(filename.c_str(), "r");
+  if (f) {
+    ::fclose(f);
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool fmsys::dir_exists(const std::string& dirname) {
+  bool ret = false;
+  DIR* d = nullptr;
+
+  d = ::opendir(dirname.c_str());
+  if (d) {
+    ::closedir(d);
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool fmsys::touch(const std::string& filename) {
+  FILE* f = nullptr;
+
+  f = ::fopen(filename.c_str(), "a");
+  if (f) {
+    ::fclose(f);
+  } else {
+    return false;
+  }
+
+  return fmsys::file_exists(filename);
+  ;
+}
+
+bool fmsys::mkdir(const std::string& dirname) {
+  if (fmsys::dir_exists(dirname)) {
+    return true;
+  }
+  if (::mkdir(dirname.c_str(),
+              S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP) != 0) {
+    return false;
+  }
+
+  return fmsys::dir_exists(dirname);
+}
+
+bool fmsys::unlink(const std::string& filename) {
+  if (::unlink(filename.c_str()) == 0) {
+    return true;
+  }
+
+  return !fmsys::file_exists(filename);
+  ;
 }

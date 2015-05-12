@@ -27,10 +27,21 @@ fmsys::path_test::path_test(std::string name) : CppUnit::TestCase(name) {}
 void fmsys::path_test::runTest() {
   std::string s1 = std::string("/foo/bar/hey");
   std::vector<std::string> v = fmsys::path_split(s1);
+  std::string tmpfile = std::string("tmpfile.txt");
+  std::string tmpdir = std::string("/tmp/tmpdir");
 
   CPPUNIT_ASSERT(v.size() == 4);
   std::string s2 = fmsys::path_join(v);
   CPPUNIT_ASSERT(s1 == s2);
+  auto touch = fmsys::touch(tmpfile);
+  CPPUNIT_ASSERT(touch);
+  CPPUNIT_ASSERT(fmsys::file_exists(tmpfile));
+  auto unlink = fmsys::unlink(tmpfile);
+  CPPUNIT_ASSERT(unlink);
+  CPPUNIT_ASSERT(!(fmsys::file_exists(tmpfile)));
+  auto mkdir = fmsys::mkdir(tmpdir);
+  CPPUNIT_ASSERT(mkdir);
+  CPPUNIT_ASSERT(!(fmsys::dir_exists(tmpdir)));
 }
 
 int main(int argc, char *argv[]) {

@@ -30,9 +30,9 @@ std::string fmsys::program_home(std::string program) {
   std::string val_cpp =
       std::string((val_c == nullptr) ? "" : std::string(val_c));
 
-  std::string path = val_cpp + fmsys::PATH_SEP + fmsys::PATH_DOT + program;
-
-  // todo : create path if needed
+  std::string path = fmsys::dir_exists(val_cpp)
+                         ? val_cpp + fmsys::PATH_SEP + fmsys::PATH_DOT + program
+                         : std::string(PATH_DOT);
 
   return path;
 }
