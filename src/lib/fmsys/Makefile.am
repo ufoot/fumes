@@ -26,13 +26,13 @@ libfmsys_la_SOURCES = fmhome.cpp fmlog.cpp fmpath.cpp
 libexec_PROGRAMS = fmsys-home-test fmsys-log-test fmsys-path-test
 fmsys_home_test_SOURCES = fmhome-test.cpp
 fmsys_home_test_LDFLAGS = @cppunit_LIBS@
-fmsys_home_test_LDADD = libfmsys.la
+fmsys_home_test_LDADD = libfmsys.la ../fmbuild/libfmbuild.la
 fmsys_log_test_SOURCES = fmlog-test.cpp
 fmsys_log_test_LDFLAGS = @cppunit_LIBS@
-fmsys_log_test_LDADD = libfmsys.la
+fmsys_log_test_LDADD = libfmsys.la ../fmbuild/libfmbuild.la
 fmsys_path_test_SOURCES = fmpath-test.cpp
 fmsys_path_test_LDFLAGS = @cppunit_LIBS@
-fmsys_path_test_LDADD = libfmsys.la
+fmsys_path_test_LDADD = libfmsys.la ../fmbuild/libfmbuild.la
 TESTS = fmsys-home-test fmsys-log-test fmsys-path-test
 
 check-local:

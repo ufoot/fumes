@@ -27,16 +27,17 @@
 #include <vector>
 
 namespace fmsys {
-std::string program_home(std::string program);
+std::string program_home(const std::string& program);
 
 enum class log_priority { CRIT, ERROR, WARNING, NOTICE, INFO, DEBUG };
 
+std::string log_setup(const std::string& program);
 class log_backend {
   std::string file_name;
   std::unique_ptr<std::ofstream> file_handler;
 
  public:
-  log_backend(std::string filename);
+  log_backend(const std::string& filename);
   std::ostream* get();
 };
 

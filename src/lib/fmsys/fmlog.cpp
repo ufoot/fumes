@@ -18,12 +18,14 @@
 // Contact author: ufoot@ufoot.org
 
 #include "fmsys.hpp"
+#include "../fmbuild/fmbuild.hpp"
 
 #include <iostream>
 
 namespace fmsys {
 constexpr char LOG_HEADER[] = "DATE;MESSAGE;...\n";
-static log_backend global_log_backend(std::string("/tmp/todo.txt"));
+constexpr char LOG_FILENAME[] = "log.txt";
+static log_backend global_log_backend(fmbuild::get_package_tarname());
 log_proxy log_crit(global_log_backend, log_priority::CRIT);
 log_proxy log_error(global_log_backend, log_priority::ERROR);
 log_proxy log_warning(global_log_backend, log_priority::WARNING);
@@ -32,10 +34,22 @@ log_proxy log_info(global_log_backend, log_priority::INFO);
 log_proxy log_debug(global_log_backend, log_priority::DEBUG);
 }
 
-fmsys::log_backend::log_backend(std::string filename)
-    : file_name{filename},
+std::string fmsys::log_setup(const std::string& program) {
+  std::string dir = fmsys::program_home(program);
+  std::string file = std::string(LOG_FILENAME);
+
+  if (fmsys::mkdir(dir)) {
+    file = dir + PATH_SEP + LOG_FILENAME;
+    fmsys::touch(file);
+  }
+
+  return file;
+}
+
+fmsys::log_backend::log_backend(const std::string& program)
+    : file_name{fmsys::log_setup(program)},
       file_handler{std::unique_ptr<std::ofstream>(
-          new std::ofstream(filename, std::ofstream::out))} {
+          new std::ofstream(file_name, std::ofstream::out))} {
   (*file_handler.get()) << fmsys::LOG_HEADER;
 }
 

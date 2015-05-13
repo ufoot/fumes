@@ -25,7 +25,7 @@ namespace fmsys {
 constexpr char ENV_HOME[] = "HOME";
 }
 
-std::string fmsys::program_home(std::string program) {
+std::string fmsys::program_home(const std::string& program) {
   char* val_c = getenv(fmsys::ENV_HOME);
   std::string val_cpp =
       std::string((val_c == nullptr) ? "" : std::string(val_c));

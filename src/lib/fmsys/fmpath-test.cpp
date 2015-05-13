@@ -41,7 +41,7 @@ void fmsys::path_test::runTest() {
   CPPUNIT_ASSERT(!(fmsys::file_exists(tmpfile)));
   auto mkdir = fmsys::mkdir(tmpdir);
   CPPUNIT_ASSERT(mkdir);
-  CPPUNIT_ASSERT(!(fmsys::dir_exists(tmpdir)));
+  CPPUNIT_ASSERT(fmsys::dir_exists(tmpdir));
 }
 
 int main(int argc, char *argv[]) {
