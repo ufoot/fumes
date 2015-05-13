@@ -20,7 +20,8 @@
 EXTRA_DIST = bootstrap
 
 distclean-local:
-	find . -name "*~" -exec rm -f "{}" \;
+	find $(top_srcdir) . -name "*~" -exec rm -f "{}" \;
+	rm -f *.h $(top_srcdir)/*.h
 
 SUBDIRS = utils src doc
 
