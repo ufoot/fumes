@@ -47,14 +47,14 @@ std::string fmsys::log_setup(const std::string& program) {
 }
 
 fmsys::log_file::log_file(const std::string& program)
-    : file_prefix{program},
-      file_name{fmsys::log_setup(program)},
+    : file_name{fmsys::log_setup(program)},
       file_handler{std::unique_ptr<std::ofstream>(
-          new std::ofstream(file_name, std::ofstream::out))} {
+          new std::ofstream(file_name, std::ofstream::out))},
+      file_prefix{program} {
   (*file_handler.get()) << fmsys::LOG_HEADER;
 }
 
-std::ostream* fmsys::log_file::get() { return file_handler.get(); }
+std::ostream* fmsys::log_file::get_ostream() { return file_handler.get(); }
 
 fmsys::log_proxy::log_proxy(log_file& file, log_priority priority)
     : std::ofstream(), proxy_file{file}, proxy_priority{priority} {}
