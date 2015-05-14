@@ -25,13 +25,13 @@
 namespace fmsys {
 constexpr char LOG_HEADER[] = "DATE;MESSAGE;...\n";
 constexpr char LOG_FILENAME[] = "log.txt";
-static log_backend global_log_backend(fmbuild::get_package_tarname());
-log_proxy log_crit(global_log_backend, log_priority::CRIT);
-log_proxy log_error(global_log_backend, log_priority::ERROR);
-log_proxy log_warning(global_log_backend, log_priority::WARNING);
-log_proxy log_notice(global_log_backend, log_priority::NOTICE);
-log_proxy log_info(global_log_backend, log_priority::INFO);
-log_proxy log_debug(global_log_backend, log_priority::DEBUG);
+static log_file global_log_file(fmbuild::get_package_tarname());
+log_proxy log_crit(global_log_file, log_priority::CRIT);
+log_proxy log_error(global_log_file, log_priority::ERROR);
+log_proxy log_warning(global_log_file, log_priority::WARNING);
+log_proxy log_notice(global_log_file, log_priority::NOTICE);
+log_proxy log_info(global_log_file, log_priority::INFO);
+log_proxy log_debug(global_log_file, log_priority::DEBUG);
 }
 
 std::string fmsys::log_setup(const std::string& program) {
@@ -46,14 +46,15 @@ std::string fmsys::log_setup(const std::string& program) {
   return file;
 }
 
-fmsys::log_backend::log_backend(const std::string& program)
-    : file_name{fmsys::log_setup(program)},
+fmsys::log_file::log_file(const std::string& program)
+    : file_prefix{program},
+      file_name{fmsys::log_setup(program)},
       file_handler{std::unique_ptr<std::ofstream>(
           new std::ofstream(file_name, std::ofstream::out))} {
   (*file_handler.get()) << fmsys::LOG_HEADER;
 }
 
-std::ostream* fmsys::log_backend::get() { return file_handler.get(); }
+std::ostream* fmsys::log_file::get() { return file_handler.get(); }
 
-fmsys::log_proxy::log_proxy(log_backend& backend, log_priority priority)
-    : std::ofstream(), proxy_backend{backend}, proxy_priority{priority} {}
+fmsys::log_proxy::log_proxy(log_file& file, log_priority priority)
+    : std::ofstream(), proxy_file{file}, proxy_priority{priority} {}

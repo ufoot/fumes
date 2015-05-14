@@ -32,24 +32,25 @@ std::string program_home(const std::string& program);
 enum class log_priority { CRIT, ERROR, WARNING, NOTICE, INFO, DEBUG };
 
 std::string log_setup(const std::string& program);
-class log_backend {
+class log_file {
+  std::string file_prefix;
   std::string file_name;
   std::unique_ptr<std::ofstream> file_handler;
 
  public:
-  log_backend(const std::string& filename);
+  log_file(const std::string& filename);
   std::ostream* get();
 };
 
 class log_proxy : public std::ofstream {
-  log_backend& proxy_backend;
+  log_file& proxy_file;
   log_priority proxy_priority;
 
  public:
-  log_proxy(log_backend& backend, log_priority priority);
+  log_proxy(log_file& file, log_priority priority);
   template <typename T>
   std::ostream& operator<<(T val) {
-    return (*proxy_backend.get()) << "todo! " << val << "\n";
+    return (*proxy_file.get()) << "todo! " << val << "\n";
   }
 };
 
