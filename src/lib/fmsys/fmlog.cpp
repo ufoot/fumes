@@ -70,7 +70,8 @@ fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority)
       proxy_file{file},
       proxy_priority{priority},
       proxy_source_file{fmsys::LOG_SOURCE_FILE_UNDEF},
-      proxy_source_line{fmsys::LOG_SOURCE_LINE_UNDEF} {}
+      proxy_source_line{fmsys::LOG_SOURCE_LINE_UNDEF},
+      message{std::shared_ptr<std::ostringstream>(new std::ostringstream())} {}
 
 fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority,
                             const char* source_file, int source_line)
@@ -78,13 +79,15 @@ fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority,
       proxy_file{file},
       proxy_priority{priority},
       proxy_source_file{source_file},
-      proxy_source_line(source_line) {}
+      proxy_source_line(source_line),
+      message{std::shared_ptr<std::ostringstream>(new std::ostringstream())} {}
 
 fmsys::log_proxy::log_proxy(fmsys::log_proxy&& other)
     : proxy_file{other.proxy_file},
       proxy_priority{other.proxy_priority},
       proxy_source_file{other.proxy_source_file},
-      proxy_source_line{other.proxy_source_line} {}
+      proxy_source_line{other.proxy_source_line},
+      message{other.message} {}
 
 fmsys::log_proxy fmsys::log_crit() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::CRIT);

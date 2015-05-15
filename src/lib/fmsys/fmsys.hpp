@@ -22,6 +22,7 @@
 
 #include <string>
 #include <ostream>
+#include <sstream>
 #include <fstream>
 #include <memory>
 #include <vector>
@@ -54,6 +55,7 @@ class log_proxy : public std::ofstream {
   log_priority proxy_priority;
   const char* proxy_source_file;
   int proxy_source_line;
+  std::shared_ptr<std::ostringstream> message;
 
  public:
   log_proxy(log_file& file, log_priority priority);
