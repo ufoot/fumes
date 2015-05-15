@@ -32,6 +32,8 @@ constexpr char BUFTIME_FORMAT[] = "%Y/%m/%d %H:%M:%S.";
 constexpr size_t BUFMICRO_SIZE = 20;
 constexpr char BUFMICRO_FORMAT[] = "%06d";
 constexpr int BUFMICRO_MODULO = 1000000;
+constexpr char LOG_SOURCE_FILE_UNDEF[] = "?";
+constexpr int LOG_SOURCE_LINE_UNDEF = 0;
 
 static log_file global_log_file(fmbuild::get_package_tarname());
 }
@@ -64,33 +66,78 @@ fmsys::log_file::log_file(const fmsys::log_file& other)
 std::ostream* fmsys::log_file::get_ostream() { return file_handler.get(); }
 
 fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority)
-    : std::ofstream(), proxy_file{file}, proxy_priority{priority} {}
+    : std::ofstream(),
+      proxy_file{file},
+      proxy_priority{priority},
+      proxy_source_file{fmsys::LOG_SOURCE_FILE_UNDEF},
+      proxy_source_line{fmsys::LOG_SOURCE_LINE_UNDEF} {}
+
+fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority,
+                            const char* source_file, int source_line)
+    : std::ofstream(),
+      proxy_file{file},
+      proxy_priority{priority},
+      proxy_source_file{source_file},
+      proxy_source_line(source_line) {}
 
 fmsys::log_proxy::log_proxy(fmsys::log_proxy&& other)
-    : proxy_file{other.proxy_file}, proxy_priority{other.proxy_priority} {}
+    : proxy_file{other.proxy_file},
+      proxy_priority{other.proxy_priority},
+      proxy_source_file{other.proxy_source_file},
+      proxy_source_line{other.proxy_source_line} {}
 
 fmsys::log_proxy fmsys::log_crit() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::CRIT);
+}
+
+fmsys::log_proxy fmsys::log_crit(const char* source_file, int source_line) {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::CRIT,
+                          source_file, source_line);
 }
 
 fmsys::log_proxy fmsys::log_error() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::ERROR);
 }
 
+fmsys::log_proxy fmsys::log_error(const char* source_file, int source_line) {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::ERROR,
+                          source_file, source_line);
+}
+
 fmsys::log_proxy fmsys::log_warning() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::WARNING);
+}
+
+fmsys::log_proxy fmsys::log_warning(const char* source_file, int source_line) {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::WARNING,
+                          source_file, source_line);
 }
 
 fmsys::log_proxy fmsys::log_notice() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::NOTICE);
 }
 
+fmsys::log_proxy fmsys::log_notice(const char* source_file, int source_line) {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::NOTICE,
+                          source_file, source_line);
+}
+
 fmsys::log_proxy fmsys::log_info() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::INFO);
 }
 
+fmsys::log_proxy fmsys::log_info(const char* source_file, int source_line) {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::INFO,
+                          source_file, source_line);
+}
+
 fmsys::log_proxy fmsys::log_debug() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::DEBUG);
+}
+
+fmsys::log_proxy fmsys::log_debug(const char* source_file, int source_line) {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::DEBUG,
+                          source_file, source_line);
 }
 
 std::string fmsys::log_time() {
@@ -118,16 +165,4 @@ std::string fmsys::log_time() {
 
   return std::string(buftime) + std::string(bufmicro);
   ;
-}
-
-std::string fmsys::log_chomp(const char* str) {
-  size_t l = strlen(str);
-  char buf[l + 1];
-
-  for (l--; l > 0 && str[l] == '\n'; l--) {
-  }
-  ::strncpy(buf, str, l);
-  buf[l] = '\0';  // paranoid ? ;)
-
-  return std::string(buf);
 }

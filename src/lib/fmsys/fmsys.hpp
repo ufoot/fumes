@@ -36,7 +36,6 @@ enum class log_priority { CRIT, ERROR, WARNING, NOTICE, INFO, DEBUG };
 constexpr char LOG_SEP_MAJOR[] = ": ";
 constexpr char LOG_SEP_MINOR[] = " ";
 std::string log_time();
-std::string log_chomp(const char* str);
 
 std::string log_setup(const std::string& program);
 class log_file {
@@ -53,9 +52,13 @@ class log_file {
 class log_proxy : public std::ofstream {
   log_file& proxy_file;
   log_priority proxy_priority;
+  const char* proxy_source_file;
+  int proxy_source_line;
 
  public:
   log_proxy(log_file& file, log_priority priority);
+  log_proxy(log_file& file, log_priority priority, const char* source_file,
+            int source_line);
   log_proxy(log_proxy&& other);
   template <typename T>
   std::ofstream& operator<<(T val) {
@@ -67,15 +70,24 @@ class log_proxy : public std::ofstream {
 };
 
 log_proxy log_crit();
+log_proxy log_crit(const char* source_file, int source_line);
 log_proxy log_error();
+log_proxy log_error(const char* source_file, int source_line);
 log_proxy log_warning();
+log_proxy log_warning(const char* source_file, int source_line);
 log_proxy log_notice();
+log_proxy log_notice(const char* source_file, int source_line);
 log_proxy log_info();
+log_proxy log_info(const char* source_file, int source_line);
 log_proxy log_debug();
+log_proxy log_debug(const char* source_file, int source_line);
 
-#define LOG_WARNING                                                          \
-  fmsys::log_warning() << __FILE__ << ":" << std::to_string(__LINE__) << " " \
-                       << __FUNCTION__ << "()" << fmsys::LOG_SEP_MAJOR
+#define LOG_CRIT fmsys::log_crit(__FILE__, __LINE__)
+#define LOG_ERROR fmsys::log_error(__FILE__, __LINE__)
+#define LOG_WARNING fmsys::log_warning(__FILE__, __LINE__)
+#define LOG_NOTICE fmsys::log_notice(__FILE__, __LINE__)
+#define LOG_INFO fmsys::log_info(__FILE__, __LINE__)
+#define LOG_DEBUG fmsys::log_debug(__FILE__, __LINE__)
 
 constexpr char PATH_DOT[] = ".";
 constexpr char PATH_SEP[] = "/";
