@@ -41,10 +41,11 @@ std::string log_chomp(const char* str);
 std::string log_setup(const std::string& program);
 class log_file {
   const std::string file_name;
-  std::unique_ptr<std::ofstream> file_handler;
+  std::shared_ptr<std::ofstream> file_handler;
 
  public:
   log_file(const std::string& filename);
+  log_file(const log_file& other);
   const std::string file_prefix;
   std::ostream* get_ostream();
 };
@@ -55,24 +56,26 @@ class log_proxy : public std::ofstream {
 
  public:
   log_proxy(log_file& file, log_priority priority);
+  log_proxy(log_proxy&& other);
   template <typename T>
-  std::ostream& operator<<(T val) {
-    return (*proxy_file.get_ostream()) << proxy_file.file_prefix
-                                       << LOG_SEP_MAJOR << log_time()
-                                       << LOG_SEP_MINOR << val << "\n";
+  std::ofstream& operator<<(T val) {
+    //(*proxy_file.get_ostream()) << proxy_file.file_prefix
+    //				<< LOG_SEP_MAJOR << log_time()
+    //				<< LOG_SEP_MINOR << val << "\n";
+    return *this;
   }
 };
 
-extern log_proxy log_crit;
-extern log_proxy log_error;
-extern log_proxy log_warning;
-extern log_proxy log_notice;
-extern log_proxy log_info;
-extern log_proxy log_debug;
+log_proxy log_crit();
+log_proxy log_error();
+log_proxy log_warning();
+log_proxy log_notice();
+log_proxy log_info();
+log_proxy log_debug();
 
-#define LOG_WARNING                                                        \
-  fmsys::log_warning << __FILE__ << ":" << std::to_string(__LINE__) << " " \
-                     << __FUNCTION__ << "()" << fmsys::LOG_SEP_MAJOR
+#define LOG_WARNING                                                          \
+  fmsys::log_warning() << __FILE__ << ":" << std::to_string(__LINE__) << " " \
+                       << __FUNCTION__ << "()" << fmsys::LOG_SEP_MAJOR
 
 constexpr char PATH_DOT[] = ".";
 constexpr char PATH_SEP[] = "/";

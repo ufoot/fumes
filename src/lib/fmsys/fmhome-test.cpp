@@ -28,7 +28,7 @@ void fmsys::home_test::runTest() {
   std::string h = fmsys::program_home(std::string("test"));
 
   CPPUNIT_ASSERT(h.length() > 0);
-  fmsys::log_notice << "home: " << h;
+  fmsys::log_notice() << "home: " << h;
 }
 
 int main(int argc, char *argv[]) {

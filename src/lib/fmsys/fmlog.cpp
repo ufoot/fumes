@@ -34,12 +34,6 @@ constexpr char BUFMICRO_FORMAT[] = "%06d";
 constexpr int BUFMICRO_MODULO = 1000000;
 
 static log_file global_log_file(fmbuild::get_package_tarname());
-log_proxy log_crit(global_log_file, log_priority::CRIT);
-log_proxy log_error(global_log_file, log_priority::ERROR);
-log_proxy log_warning(global_log_file, log_priority::WARNING);
-log_proxy log_notice(global_log_file, log_priority::NOTICE);
-log_proxy log_info(global_log_file, log_priority::INFO);
-log_proxy log_debug(global_log_file, log_priority::DEBUG);
 }
 
 std::string fmsys::log_setup(const std::string& program) {
@@ -56,16 +50,48 @@ std::string fmsys::log_setup(const std::string& program) {
 
 fmsys::log_file::log_file(const std::string& program)
     : file_name{fmsys::log_setup(program)},
-      file_handler{std::unique_ptr<std::ofstream>(
+      file_handler{std::shared_ptr<std::ofstream>(
           new std::ofstream(file_name, std::ofstream::out))},
       file_prefix{program} {
   (*file_handler.get()) << fmsys::LOG_HEADER;
 }
 
+fmsys::log_file::log_file(const fmsys::log_file& other)
+    : file_name{other.file_name},
+      file_handler{other.file_handler},
+      file_prefix{other.file_prefix} {}
+
 std::ostream* fmsys::log_file::get_ostream() { return file_handler.get(); }
 
-fmsys::log_proxy::log_proxy(log_file& file, log_priority priority)
+fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority)
     : std::ofstream(), proxy_file{file}, proxy_priority{priority} {}
+
+fmsys::log_proxy::log_proxy(fmsys::log_proxy&& other)
+    : proxy_file{other.proxy_file}, proxy_priority{other.proxy_priority} {}
+
+fmsys::log_proxy fmsys::log_crit() {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::CRIT);
+}
+
+fmsys::log_proxy fmsys::log_error() {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::ERROR);
+}
+
+fmsys::log_proxy fmsys::log_warning() {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::WARNING);
+}
+
+fmsys::log_proxy fmsys::log_notice() {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::NOTICE);
+}
+
+fmsys::log_proxy fmsys::log_info() {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::INFO);
+}
+
+fmsys::log_proxy fmsys::log_debug() {
+  return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::DEBUG);
+}
 
 std::string fmsys::log_time() {
   time_t rawtime_sec = 0;
