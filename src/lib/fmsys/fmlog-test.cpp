@@ -22,11 +22,39 @@
 #include <cppunit/TestResult.h>
 #include <cppunit/ui/text/TestRunner.h>
 
+namespace fmsys {
+constexpr char TEST_LOG_WORD1[] = "foo";
+constexpr char TEST_LOG_WORD2[] = ",bar\n";
+constexpr char TEST_LOG_MULTILINE[] = "hello\nworld\n";
+}
+
 fmsys::log_test::log_test(std::string name) : CppUnit::TestCase(name) {}
 
 void fmsys::log_test::runTest() {
-  fmsys::log_warning() << "test";
-  LOG_WARNING << "test";
+  fmsys::log_crit() << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  LOG_CRIT << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  fmsys::log_crit() << TEST_LOG_MULTILINE;
+  LOG_CRIT << TEST_LOG_MULTILINE;
+  fmsys::log_error() << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  LOG_ERROR << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  fmsys::log_error() << TEST_LOG_MULTILINE;
+  LOG_ERROR << TEST_LOG_MULTILINE;
+  fmsys::log_warning() << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  LOG_WARNING << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  fmsys::log_warning() << TEST_LOG_MULTILINE;
+  LOG_WARNING << TEST_LOG_MULTILINE;
+  fmsys::log_notice() << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  LOG_NOTICE << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  fmsys::log_notice() << TEST_LOG_MULTILINE;
+  LOG_NOTICE << TEST_LOG_MULTILINE;
+  fmsys::log_info() << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  LOG_INFO << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  fmsys::log_info() << TEST_LOG_MULTILINE;
+  LOG_INFO << TEST_LOG_MULTILINE;
+  fmsys::log_debug() << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  LOG_DEBUG << TEST_LOG_WORD1 << TEST_LOG_WORD2;
+  fmsys::log_debug() << TEST_LOG_MULTILINE;
+  LOG_DEBUG << TEST_LOG_MULTILINE;
 
   CPPUNIT_ASSERT(1 == 1);
 }

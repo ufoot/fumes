@@ -36,6 +36,7 @@ enum class log_priority { CRIT, ERROR, WARNING, NOTICE, INFO, DEBUG };
 
 constexpr char LOG_SEP_MAJOR[] = ": ";
 constexpr char LOG_SEP_MINOR[] = " ";
+constexpr char LOG_EOL = '\n';
 std::string log_time();
 
 std::string log_setup(const std::string& program);
@@ -56,6 +57,7 @@ class log_proxy : public std::ofstream {
   const char* proxy_source_file;
   int proxy_source_line;
   std::shared_ptr<std::ostringstream> message;
+  void process_output();
 
  public:
   log_proxy(log_file& file, log_priority priority);
@@ -64,9 +66,9 @@ class log_proxy : public std::ofstream {
   log_proxy(log_proxy&& other);
   template <typename T>
   std::ofstream& operator<<(T val) {
-    //(*proxy_file.get_ostream()) << proxy_file.file_prefix
-    //				<< LOG_SEP_MAJOR << log_time()
-    //				<< LOG_SEP_MINOR << val << "\n";
+    (*message.get()) << (val);
+    process_output();
+
     return *this;
   }
 };

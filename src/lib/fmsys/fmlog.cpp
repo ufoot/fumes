@@ -32,7 +32,7 @@ constexpr char BUFTIME_FORMAT[] = "%Y/%m/%d %H:%M:%S.";
 constexpr size_t BUFMICRO_SIZE = 20;
 constexpr char BUFMICRO_FORMAT[] = "%06d";
 constexpr int BUFMICRO_MODULO = 1000000;
-constexpr char LOG_SOURCE_FILE_UNDEF[] = "?";
+constexpr char LOG_SOURCE_FILE_UNDEF[] = "?.cpp";
 constexpr int LOG_SOURCE_LINE_UNDEF = 0;
 
 static log_file global_log_file(fmbuild::get_package_tarname());
@@ -88,6 +88,22 @@ fmsys::log_proxy::log_proxy(fmsys::log_proxy&& other)
       proxy_source_file{other.proxy_source_file},
       proxy_source_line{other.proxy_source_line},
       message{other.message} {}
+
+void fmsys::log_proxy::process_output() {
+  auto eol = (*message.get()).str().find(LOG_EOL);
+
+  std::cout << (*message.get()).str();
+  if (eol != std::string::npos) {
+    auto output = (*message.get()).str().substr(0, eol + 1);
+    (*proxy_file.get_ostream()) << proxy_file.file_prefix << LOG_SEP_MAJOR
+                                << log_time() << LOG_SEP_MINOR
+                                << proxy_source_file << ":" << proxy_source_line
+                                << LOG_SEP_MAJOR << output;
+    // std::cout<<proxy_file.file_prefix<<LOG_SEP_MAJOR<<output;
+    (*message.get())
+        .str((*message.get()).str().substr(eol + 1, std::string::npos));
+  }
+}
 
 fmsys::log_proxy fmsys::log_crit() {
   return fmsys::log_proxy(fmsys::global_log_file, fmsys::log_priority::CRIT);
