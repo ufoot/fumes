@@ -36,6 +36,7 @@ constexpr char LOG_SOURCE_FILE_UNDEF[] = "?.cpp";
 constexpr int LOG_SOURCE_LINE_UNDEF = 0;
 
 static log_file global_log_file(fmbuild::get_package_tarname());
+static log_syslog global_log_syslog(fmbuild::get_package_tarname());
 }
 
 std::string fmsys::log_setup(const std::string& program) {
@@ -65,6 +66,12 @@ fmsys::log_file::log_file(const fmsys::log_file& other)
 
 std::ostream& fmsys::log_file::get_ostream() { return *file_handler; }
 
+fmsys::log_syslog::log_syslog(const std::string& program) {
+  ::openlog(program.c_str(), LOG_PID, 0);
+}
+
+fmsys::log_syslog::~log_syslog() { ::closelog(); }
+
 fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority)
     : proxy_file{file},
       proxy_priority{priority},
@@ -92,11 +99,24 @@ void fmsys::log_proxy::process_output() {
 
   if (eol != std::string::npos) {
     auto output = (*message).str().substr(0, eol + 1);
-    proxy_file.get_ostream() << proxy_file.file_prefix << LOG_SEP_MAJOR
-                             << log_time() << LOG_SEP_MINOR << proxy_source_file
-                             << ":" << proxy_source_line << LOG_SEP_MAJOR
-                             << output;
-    std::cout << proxy_file.file_prefix << LOG_SEP_MAJOR << output;
+    auto time = log_time();
+    if (proxy_priority <= fmsys::FILE_PRIORITY) {
+      proxy_file.get_ostream() << proxy_file.file_prefix << LOG_SEP_MAJOR
+                               << time << LOG_SEP_MINOR << proxy_source_file
+                               << ":" << proxy_source_line << LOG_SEP_MAJOR
+                               << output;
+    }
+    if (proxy_priority <= fmsys::COUT_PRIORITY) {
+      std::cout << proxy_file.file_prefix << LOG_SEP_MAJOR << time
+                << LOG_SEP_MAJOR << output;
+    }
+    if (proxy_priority <= fmsys::SYSLOG_PRIORITY) {
+      ::syslog(int(proxy_priority), "%s", output.c_str());
+    }
+    if (proxy_priority <= fmsys::FLUSH_PRIORITY) {
+      proxy_file.get_ostream().flush();
+      std::cout.flush();
+    }
     (*message).str((*message).str().substr(eol + 1, std::string::npos));
     process_output();
   }

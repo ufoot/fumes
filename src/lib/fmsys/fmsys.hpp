@@ -27,12 +27,26 @@
 #include <memory>
 #include <vector>
 
+#include <syslog.h>
+
 #include "../fmbuild/fmbuild.hpp"
 
 namespace fmsys {
 std::string program_home(const std::string& program);
 
-enum class log_priority { CRIT, ERROR, WARNING, NOTICE, INFO, DEBUG };
+enum class log_priority : int {
+  CRIT = LOG_CRIT,
+  ERROR = LOG_ERR,
+  WARNING = LOG_WARNING,
+  NOTICE = LOG_NOTICE,
+  INFO = LOG_INFO,
+  DEBUG = LOG_DEBUG
+};
+
+constexpr log_priority COUT_PRIORITY = log_priority::NOTICE;
+constexpr log_priority FILE_PRIORITY = log_priority::DEBUG;
+constexpr log_priority SYSLOG_PRIORITY = log_priority::WARNING;
+constexpr log_priority FLUSH_PRIORITY = log_priority::NOTICE;
 
 constexpr char LOG_SEP_MAJOR[] = ": ";
 constexpr char LOG_SEP_MINOR[] = " ";
@@ -51,6 +65,12 @@ class log_file {
   std::ostream& get_ostream();
 };
 
+class log_syslog {
+ public:
+  log_syslog(const std::string& program);
+  ~log_syslog();
+};
+
 class log_proxy {
   log_file& proxy_file;
   log_priority proxy_priority;
@@ -60,10 +80,20 @@ class log_proxy {
   void process_output();
 
  public:
+  /// Creates a log_proxy object, ready to log, with the given priority.
   log_proxy(log_file& file, log_priority priority);
+  /// Creates a log_proxy object, ready to log, with the given priority.
+  /// Call in with FILE and LINE standard C macro and
+  /// it will report the file:line of the caller.
   log_proxy(log_file& file, log_priority priority, const char* source_file,
             int source_line);
+  /// Default move constructor.
   log_proxy(log_proxy&& other);
+  /// Main operator used to log stuff. This is probably the only usefull
+  /// stuff in the whole object, the idea is to use the object the way
+  /// one would use std::cout, just pile up << operators to the right of
+  /// it. Do not forget to append a final '\n' (EOL) else content is never
+  /// flushed and never logged at all.
   template <typename T>
   log_proxy& operator<<(T val) {
     (*message) << (val);
@@ -73,25 +103,49 @@ class log_proxy {
   }
 };
 
+/// Creates a log_proxy object, ready to log in critical mode.
 log_proxy log_crit();
+/// Creates a log_proxy object, ready to log in critical mode.
+/// Call in with FILE and LINE standard C macro and
+/// it will report the file:line of the caller.
 log_proxy log_crit(const char* source_file, int source_line);
+/// Creates a log_proxy object, ready to log in error mode.
 log_proxy log_error();
+/// Creates a log_proxy object, ready to log in error mode.
+/// Call in with FILE and LINE standard C macro and
+/// it will report the file:line of the caller.
 log_proxy log_error(const char* source_file, int source_line);
+/// Creates a log_proxy object, ready to log in warning mode.
 log_proxy log_warning();
+/// Creates a log_proxy object, ready to log in warning mode.
+/// Call in with FILE and LINE standard C macro and
+/// it will report the file:line of the caller.
 log_proxy log_warning(const char* source_file, int source_line);
+/// Creates a log_proxy object, ready to log in notice mode.
 log_proxy log_notice();
+/// Creates a log_proxy object, ready to log in notice mode.
+/// Call in with FILE and LINE standard C macro and
+/// it will report the file:line of the caller.
 log_proxy log_notice(const char* source_file, int source_line);
+/// Creates a log_proxy object, ready to log in info mode.
 log_proxy log_info();
+/// Creates a log_proxy object, ready to log in info mode.
+/// Call in with FILE and LINE standard C macro and
+/// it will report the file:line of the caller.
 log_proxy log_info(const char* source_file, int source_line);
+/// Creates a log_proxy object, ready to log in debug mode.
 log_proxy log_debug();
+/// Creates a log_proxy object, ready to log in debug mode.
+/// Call in with FILE and LINE standard C macro and
+/// it will report the file:line of the caller.
 log_proxy log_debug(const char* source_file, int source_line);
 
-#define LOG_CRIT fmsys::log_crit(__FILE__, __LINE__)
-#define LOG_ERROR fmsys::log_error(__FILE__, __LINE__)
-#define LOG_WARNING fmsys::log_warning(__FILE__, __LINE__)
-#define LOG_NOTICE fmsys::log_notice(__FILE__, __LINE__)
-#define LOG_INFO fmsys::log_info(__FILE__, __LINE__)
-#define LOG_DEBUG fmsys::log_debug(__FILE__, __LINE__)
+#define FMSYS_LOG_CRIT fmsys::log_crit(__FILE__, __LINE__)
+#define FMSYS_LOG_ERROR fmsys::log_error(__FILE__, __LINE__)
+#define FMSYS_LOG_WARNING fmsys::log_warning(__FILE__, __LINE__)
+#define FMSYS_LOG_NOTICE fmsys::log_notice(__FILE__, __LINE__)
+#define FMSYS_LOG_INFO fmsys::log_info(__FILE__, __LINE__)
+#define FMSYS_LOG_DEBUG fmsys::log_debug(__FILE__, __LINE__)
 
 constexpr char PATH_DOT[] = ".";
 constexpr char PATH_SEP[] = "/";

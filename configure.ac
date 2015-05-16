@@ -43,6 +43,10 @@ AC_SUBST(FM_LDFLAGS)
 
 dnl Headers, some are optional
 AC_CHECK_HEADERS(stdlib.h)
+AC_CHECK_HEADERS(syslog.h)
+AC_CHECK_FUNCS(openlog)
+AC_CHECK_FUNCS(syslog)
+AC_CHECK_FUNCS(closelog)
 
 dnl Ogre3d
 dnl http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Setting+Up+An+Application+-+Autotools+-+Linux
