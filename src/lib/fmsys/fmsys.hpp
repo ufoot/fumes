@@ -48,10 +48,10 @@ class log_file {
   log_file(const std::string& filename);
   log_file(const log_file& other);
   const std::string file_prefix;
-  std::ostream* get_ostream();
+  std::ostream& get_ostream();
 };
 
-class log_proxy : public std::ofstream {
+class log_proxy {
   log_file& proxy_file;
   log_priority proxy_priority;
   const char* proxy_source_file;
@@ -65,8 +65,8 @@ class log_proxy : public std::ofstream {
             int source_line);
   log_proxy(log_proxy&& other);
   template <typename T>
-  std::ofstream& operator<<(T val) {
-    (*message.get()) << (val);
+  log_proxy& operator<<(T val) {
+    (*message) << (val);
     process_output();
 
     return *this;

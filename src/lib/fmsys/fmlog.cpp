@@ -55,7 +55,7 @@ fmsys::log_file::log_file(const std::string& program)
       file_handler{std::shared_ptr<std::ofstream>(
           new std::ofstream(file_name, std::ofstream::out))},
       file_prefix{program} {
-  (*file_handler.get()) << fmsys::LOG_HEADER;
+  (*file_handler) << fmsys::LOG_HEADER;
 }
 
 fmsys::log_file::log_file(const fmsys::log_file& other)
@@ -63,11 +63,10 @@ fmsys::log_file::log_file(const fmsys::log_file& other)
       file_handler{other.file_handler},
       file_prefix{other.file_prefix} {}
 
-std::ostream* fmsys::log_file::get_ostream() { return file_handler.get(); }
+std::ostream& fmsys::log_file::get_ostream() { return *file_handler; }
 
 fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority)
-    : std::ofstream(),
-      proxy_file{file},
+    : proxy_file{file},
       proxy_priority{priority},
       proxy_source_file{fmsys::LOG_SOURCE_FILE_UNDEF},
       proxy_source_line{fmsys::LOG_SOURCE_LINE_UNDEF},
@@ -75,8 +74,7 @@ fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority)
 
 fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority,
                             const char* source_file, int source_line)
-    : std::ofstream(),
-      proxy_file{file},
+    : proxy_file{file},
       proxy_priority{priority},
       proxy_source_file{source_file},
       proxy_source_line(source_line),
@@ -90,18 +88,17 @@ fmsys::log_proxy::log_proxy(fmsys::log_proxy&& other)
       message{other.message} {}
 
 void fmsys::log_proxy::process_output() {
-  auto eol = (*message.get()).str().find(LOG_EOL);
+  auto eol = (*message).str().find(LOG_EOL);
 
-  std::cout << (*message.get()).str();
   if (eol != std::string::npos) {
-    auto output = (*message.get()).str().substr(0, eol + 1);
-    (*proxy_file.get_ostream()) << proxy_file.file_prefix << LOG_SEP_MAJOR
-                                << log_time() << LOG_SEP_MINOR
-                                << proxy_source_file << ":" << proxy_source_line
-                                << LOG_SEP_MAJOR << output;
-    // std::cout<<proxy_file.file_prefix<<LOG_SEP_MAJOR<<output;
-    (*message.get())
-        .str((*message.get()).str().substr(eol + 1, std::string::npos));
+    auto output = (*message).str().substr(0, eol + 1);
+    proxy_file.get_ostream() << proxy_file.file_prefix << LOG_SEP_MAJOR
+                             << log_time() << LOG_SEP_MINOR << proxy_source_file
+                             << ":" << proxy_source_line << LOG_SEP_MAJOR
+                             << output;
+    std::cout << proxy_file.file_prefix << LOG_SEP_MAJOR << output;
+    (*message).str((*message).str().substr(eol + 1, std::string::npos));
+    process_output();
   }
 }
 
