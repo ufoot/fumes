@@ -49,32 +49,32 @@ find_configure_ac () {
     fi
 }
 
-find_fmversion_cpp () {
-    if [ -f src/lib/fmbuild/fmversion.cpp ] ; then
-	    FMVERSION_CPP="src/lib/fmbuild/fmversion.cpp"
+find_fmbuild_version_cpp () {
+    if [ -f src/lib/fmbuild/fmbuild-version.cpp ] ; then
+	    FMBUILD_VERSION_CPP="src/lib/fmbuild/fmbuild-version.cpp"
 	    if [ -f ${CONFIGURE_AC} ] ; then
             true
 	    else
-            echo "unable to open ${FMVERSION_CPP}"
+            echo "unable to open ${FMBUILD_VERSION_CPP}"
             exit 2
 	    fi
     else
-	    echo "unable to find src/lib/fmbuild/fmversion.cpp"
+	    echo "unable to find src/lib/fmbuild/fmbuild-version.cpp"
 	    exit 1
     fi
 }
 
-find_fmpackage_cpp () {
-    if [ -f src/lib/fmbuild/fmpackage.cpp ] ; then
-	    FMPACKAGE_CPP="src/lib/fmbuild/fmpackage.cpp"
+find_fmbuild_package_cpp () {
+    if [ -f src/lib/fmbuild/fmbuild-package.cpp ] ; then
+	    FMBUILD_PACKAGE_CPP="src/lib/fmbuild/fmbuild-package.cpp"
 	    if [ -f ${CONFIGURE_AC} ] ; then
             true
 	    else
-            echo "unable to open ${FMPACKAGE_CPP}"
+            echo "unable to open ${FMBUILD_PACKAGE_CPP}"
             exit 2
 	    fi
     else
-	    echo "unable to find src/lib/fmbuild/fmpackage.cpp"
+	    echo "unable to find src/lib/fmbuild/fmbuild-package.cpp"
 	    exit 1
     fi
 }
@@ -121,19 +121,19 @@ do_patch () {
         echo "current version is ${VERSION_DOT}"
         #touch ${CONFIGURE_AC}
     else
-        echo "patching ${FMPACKAGE_CPP} with package tarname=${PACKAGE_TARNAME} name=${PACKAGE_NAME} email=${PACKAGE_EMAIL} url=${PACKAGE_URL}"
-        sed -i "s/constexpr.*PACKAGE_TARNAME.*/constexpr char PACKAGE_TARNAME[] = \"${PACKAGE_TARNAME}\";/g" ${FMPACKAGE_CPP}
-        sed -i "s/constexpr.*PACKAGE_NAME.*/constexpr char PACKAGE_NAME[] = \"${PACKAGE_NAME}\";/g" ${FMPACKAGE_CPP}
-        sed -i "s/constexpr.*PACKAGE_EMAIL.*/constexpr char PACKAGE_EMAIL[] = \"${PACKAGE_EMAIL}\";/g" ${FMPACKAGE_CPP}
-        sed -i "s/constexpr.*PACKAGE_URL.*/constexpr char PACKAGE_URL[] = \"${PACKAGE_URL}\";/g" ${FMPACKAGE_CPP}
-        if which indent > /dev/null ; then indent ${FMPACKAGE_CPP} ; fi
-        if which indent > /dev/null ; then indent ${FMPACKAGE_CPP} ; fi
-        echo "patching ${FMVERSION_CPP} with version major=${VERSION_MAJOR} minor=${VERSION_MINOR} stamp=${VERSION_STAMP}"
-        sed -i "s/constexpr.*VERSION_MAJOR.*/constexpr int VERSION_MAJOR = ${VERSION_MAJOR};/g" ${FMVERSION_CPP}
-        sed -i "s/constexpr.*VERSION_MINOR.*/constexpr int VERSION_MINOR = ${VERSION_MINOR};/g" ${FMVERSION_CPP}
-        sed -i "s/constexpr.*VERSION_STAMP.*/constexpr char VERSION_STAMP[] = \"${VERSION_STAMP}\";/g" ${FMVERSION_CPP}
-        if which indent > /dev/null ; then indent ${FMVERSION_CPP} ; fi
-        if which indent > /dev/null ; then indent ${FMVERSION_CPP} ; fi
+        echo "patching ${FMBUILD_PACKAGE_CPP} with package tarname=${PACKAGE_TARNAME} name=${PACKAGE_NAME} email=${PACKAGE_EMAIL} url=${PACKAGE_URL}"
+        sed -i "s/constexpr.*PACKAGE_TARNAME.*/constexpr char PACKAGE_TARNAME[] = \"${PACKAGE_TARNAME}\";/g" ${FMBUILD_PACKAGE_CPP}
+        sed -i "s/constexpr.*PACKAGE_NAME.*/constexpr char PACKAGE_NAME[] = \"${PACKAGE_NAME}\";/g" ${FMBUILD_PACKAGE_CPP}
+        sed -i "s/constexpr.*PACKAGE_EMAIL.*/constexpr char PACKAGE_EMAIL[] = \"${PACKAGE_EMAIL}\";/g" ${FMBUILD_PACKAGE_CPP}
+        sed -i "s/constexpr.*PACKAGE_URL.*/constexpr char PACKAGE_URL[] = \"${PACKAGE_URL}\";/g" ${FMBUILD_PACKAGE_CPP}
+        if which indent > /dev/null ; then indent ${FMBUILD_PACKAGE_CPP} ; fi
+        if which indent > /dev/null ; then indent ${FMBUILD_PACKAGE_CPP} ; fi
+        echo "patching ${FMBUILD_VERSION_CPP} with version major=${VERSION_MAJOR} minor=${VERSION_MINOR} stamp=${VERSION_STAMP}"
+        sed -i "s/constexpr.*VERSION_MAJOR.*/constexpr int VERSION_MAJOR = ${VERSION_MAJOR};/g" ${FMBUILD_VERSION_CPP}
+        sed -i "s/constexpr.*VERSION_MINOR.*/constexpr int VERSION_MINOR = ${VERSION_MINOR};/g" ${FMBUILD_VERSION_CPP}
+        sed -i "s/constexpr.*VERSION_STAMP.*/constexpr char VERSION_STAMP[] = \"${VERSION_STAMP}\";/g" ${FMBUILD_VERSION_CPP}
+        if which indent > /dev/null ; then indent ${FMBUILD_VERSION_CPP} ; fi
+        if which indent > /dev/null ; then indent ${FMBUILD_VERSION_CPP} ; fi
         echo "patching ${CONFIGURE_AC} with version ${VERSION_DOT}"
         sed -i "s/^AC_INIT.*/AC_INIT([${PACKAGE_NAME}],[${VERSION_DOT}],[${PACKAGE_EMAIL}],[${PACKAGE_TARNAME}],[${PACKAGE_URL}])/g" ${CONFIGURE_AC}
         if which indent > /dev/null && test -x utils/indent.sh > /dev/null ; then utils/indent.sh ; fi
@@ -141,8 +141,8 @@ do_patch () {
 }
 
 find_configure_ac
-find_fmversion_cpp
-find_fmpackage_cpp
+find_fmbuild_version_cpp
+find_fmbuild_package_cpp
 git_check
 git_changelog
 calc_branch
