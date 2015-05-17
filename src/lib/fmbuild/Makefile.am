@@ -21,13 +21,13 @@ AM_CXXFLAGS = @FM_CXXFLAGS@
 AM_LDFLAGS = @FM_LDFLAGS@
 
 noinst_LTLIBRARIES = libfmbuild.la
-libfmbuild_la_SOURCES = fmpackage.cpp fmversion.cpp
+libfmbuild_la_SOURCES = fmbuild-package.cpp fmbuild-version.cpp
 
 libexec_PROGRAMS = fmbuild-package-test fmbuild-version-test
-fmbuild_package_test_SOURCES = fmpackage-test.cpp
+fmbuild_package_test_SOURCES = fmbuild-package-test.cpp
 fmbuild_package_test_LDFLAGS = @cppunit_LIBS@
 fmbuild_package_test_LDADD = libfmbuild.la
-fmbuild_version_test_SOURCES = fmversion-test.cpp
+fmbuild_version_test_SOURCES = fmbuild-version-test.cpp
 fmbuild_version_test_LDFLAGS = @cppunit_LIBS@
 fmbuild_version_test_LDADD = libfmbuild.la
 TESTS = fmbuild-package-test fmbuild-version-test
