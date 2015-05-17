@@ -43,15 +43,11 @@ enum class log_priority : int {
   DEBUG = LOG_DEBUG
 };
 
-constexpr log_priority COUT_PRIORITY = log_priority::NOTICE;
-constexpr log_priority FILE_PRIORITY = log_priority::DEBUG;
-constexpr log_priority SYSLOG_PRIORITY = log_priority::WARNING;
-constexpr log_priority FLUSH_PRIORITY = log_priority::NOTICE;
-
 constexpr char LOG_SEP_MAJOR[] = ": ";
 constexpr char LOG_SEP_MINOR[] = " ";
 constexpr char LOG_EOL = '\n';
-std::string log_time();
+std::string log_time(bool full);
+std::string log_priority_string(log_priority priority);
 
 std::string log_setup(const std::string& program);
 class log_file {

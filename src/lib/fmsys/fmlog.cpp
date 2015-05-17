@@ -28,12 +28,27 @@ namespace fmsys {
 constexpr char LOG_HEADER[] = "DATE;MESSAGE;...\n";
 constexpr char LOG_FILENAME[] = "log.txt";
 constexpr size_t BUFTIME_SIZE = 100;
-constexpr char BUFTIME_FORMAT[] = "%Y/%m/%d %H:%M:%S.";
+constexpr char BUFTIME_FORMAT_FULL[] = "%Y/%m/%d %H:%M:%S.";
+constexpr char BUFTIME_FORMAT_LIGHT[] = "%H:%M:%S";
 constexpr size_t BUFMICRO_SIZE = 20;
 constexpr char BUFMICRO_FORMAT[] = "%06d";
 constexpr int BUFMICRO_MODULO = 1000000;
 constexpr char LOG_SOURCE_FILE_UNDEF[] = "?.cpp";
 constexpr int LOG_SOURCE_LINE_UNDEF = 0;
+
+constexpr char STR_CRIT[] = "CRIT";
+constexpr char STR_ERROR[] = "ERROR";
+constexpr char STR_WARNING[] = "WARNING";
+constexpr char STR_NOTICE[] = "NOTICE";
+constexpr char STR_INFO[] = "INFO";
+constexpr char STR_DEBUG[] = "DEBUG";
+constexpr char STR_UNKNOWN[] = "UNKNOWN";
+
+constexpr log_priority CERR_PRIORITY = log_priority::NOTICE;
+constexpr log_priority PROBLEM_PRIORITY = log_priority::WARNING;
+constexpr log_priority FILE_PRIORITY = log_priority::DEBUG;
+constexpr log_priority SYSLOG_PRIORITY = log_priority::WARNING;
+constexpr log_priority FLUSH_PRIORITY = log_priority::NOTICE;
 
 static log_file global_log_file(fmbuild::get_package_tarname());
 static log_syslog global_log_syslog(fmbuild::get_package_tarname());
@@ -99,23 +114,25 @@ void fmsys::log_proxy::process_output() {
 
   if (eol != std::string::npos) {
     auto output = (*message).str().substr(0, eol + 1);
-    auto time = log_time();
+    auto ps = log_priority_string(proxy_priority);
     if (proxy_priority <= fmsys::FILE_PRIORITY) {
-      proxy_file.get_ostream() << proxy_file.file_prefix << LOG_SEP_MAJOR
-                               << time << LOG_SEP_MINOR << proxy_source_file
-                               << ":" << proxy_source_line << LOG_SEP_MAJOR
-                               << output;
+      proxy_file.get_ostream() << proxy_file.file_prefix << ": "
+                               << log_time(true) << " " << proxy_source_file
+                               << ":" << proxy_source_line << ": " << ps
+                               << " - " << output;
     }
-    if (proxy_priority <= fmsys::COUT_PRIORITY) {
-      std::cout << proxy_file.file_prefix << LOG_SEP_MAJOR << time
-                << LOG_SEP_MAJOR << output;
+    if (proxy_priority <= fmsys::CERR_PRIORITY) {
+      std::cerr << proxy_file.file_prefix << " " << log_time(false) << ":"
+                << (proxy_priority <= fmsys::PROBLEM_PRIORITY ? " " + ps : "")
+                << " - " << output;
     }
     if (proxy_priority <= fmsys::SYSLOG_PRIORITY) {
-      ::syslog(int(proxy_priority), "%s", output.c_str());
+      ::syslog(int(proxy_priority), "%s:%d: %s - %s", proxy_source_file,
+               proxy_source_line, ps.c_str(), output.c_str());
     }
     if (proxy_priority <= fmsys::FLUSH_PRIORITY) {
       proxy_file.get_ostream().flush();
-      std::cout.flush();
+      std::cerr.flush();
     }
     (*message).str((*message).str().substr(eol + 1, std::string::npos));
     process_output();
@@ -176,7 +193,7 @@ fmsys::log_proxy fmsys::log_debug(const char* source_file, int source_line) {
                           source_file, source_line);
 }
 
-std::string fmsys::log_time() {
+std::string fmsys::log_time(bool full) {
   time_t rawtime_sec = 0;
   struct tm* timeinfo = nullptr;
   char buftime[BUFTIME_SIZE];
@@ -191,14 +208,35 @@ std::string fmsys::log_time() {
                     tp.time_since_epoch()).count();
   timeinfo = ::localtime(&rawtime_sec);
   if (timeinfo != nullptr) {
-    ::strftime(buftime, BUFTIME_SIZE - 1, BUFTIME_FORMAT, timeinfo);
+    ::strftime(buftime, BUFTIME_SIZE - 1,
+               full ? BUFTIME_FORMAT_FULL : BUFTIME_FORMAT_LIGHT, timeinfo);
   }
 
-  rawtime_micro = std::chrono::duration_cast<std::chrono::microseconds>(
-                      tp.time_since_epoch()).count() %
-                  BUFMICRO_MODULO;
-  ::snprintf(bufmicro, BUFMICRO_SIZE - 1, BUFMICRO_FORMAT, rawtime_micro);
+  if (full) {
+    rawtime_micro = std::chrono::duration_cast<std::chrono::microseconds>(
+                        tp.time_since_epoch()).count() %
+                    BUFMICRO_MODULO;
+    ::snprintf(bufmicro, BUFMICRO_SIZE - 1, BUFMICRO_FORMAT, rawtime_micro);
+  }
 
   return std::string(buftime) + std::string(bufmicro);
   ;
+}
+
+std::string fmsys::log_priority_string(fmsys::log_priority priority) {
+  switch (priority) {
+    case fmsys::log_priority::CRIT:
+      return std::string(fmsys::STR_CRIT);
+    case fmsys::log_priority::ERROR:
+      return std::string(fmsys::STR_ERROR);
+    case fmsys::log_priority::WARNING:
+      return std::string(fmsys::STR_WARNING);
+    case fmsys::log_priority::NOTICE:
+      return std::string(fmsys::STR_NOTICE);
+    case fmsys::log_priority::INFO:
+      return std::string(fmsys::STR_INFO);
+    case fmsys::log_priority::DEBUG:
+      return std::string(fmsys::STR_DEBUG);
+  }
+  return std::string(fmsys::STR_UNKNOWN);
 }
