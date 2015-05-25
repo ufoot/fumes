@@ -56,7 +56,12 @@ class log_file {
 
  public:
   log_file(const std::string& filename);
-  log_file(const log_file& other);
+  log_file() = delete;
+  log_file(const log_file& other) = default;
+  log_file(log_file&& other) = default;
+  log_file& operator=(const log_file& other) = default;
+  log_file& operator=(log_file&& other) = default;
+  ~log_file() = default;
   const std::string file_prefix;
   std::ostream& get_ostream();
 };
@@ -83,8 +88,14 @@ class log_proxy {
   /// it will report the file:line of the caller.
   log_proxy(log_file& file, log_priority priority, const char* source_file,
             int source_line);
+  log_proxy() = delete;
+  /// Default copy constructor.
+  log_proxy(const log_proxy& other) = default;
   /// Default move constructor.
-  log_proxy(log_proxy&& other);
+  log_proxy(log_proxy&& other) = default;
+  log_proxy& operator=(const log_proxy& other) = default;
+  log_proxy& operator=(log_proxy&& other) = default;
+  ~log_proxy() = default;
   /// Main operator used to log stuff. This is probably the only usefull
   /// stuff in the whole object, the idea is to use the object the way
   /// one would use std::cout, just pile up << operators to the right of

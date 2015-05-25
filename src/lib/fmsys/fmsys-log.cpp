@@ -74,11 +74,6 @@ fmsys::log_file::log_file(const std::string& program)
   (*file_handler) << fmsys::LOG_HEADER;
 }
 
-fmsys::log_file::log_file(const fmsys::log_file& other)
-    : file_name{other.file_name},
-      file_handler{other.file_handler},
-      file_prefix{other.file_prefix} {}
-
 std::ostream& fmsys::log_file::get_ostream() { return *file_handler; }
 
 fmsys::log_syslog::log_syslog(const std::string& program) {
@@ -101,13 +96,6 @@ fmsys::log_proxy::log_proxy(fmsys::log_file& file, fmsys::log_priority priority,
       proxy_source_file{source_file},
       proxy_source_line(source_line),
       message{std::shared_ptr<std::ostringstream>(new std::ostringstream())} {}
-
-fmsys::log_proxy::log_proxy(fmsys::log_proxy&& other)
-    : proxy_file{other.proxy_file},
-      proxy_priority{other.proxy_priority},
-      proxy_source_file{other.proxy_source_file},
-      proxy_source_line{other.proxy_source_line},
-      message{other.message} {}
 
 void fmsys::log_proxy::process_output() {
   auto eol = (*message).str().find(LOG_EOL);
