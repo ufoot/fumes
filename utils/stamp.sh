@@ -30,7 +30,7 @@ fi
 PACKAGE_TARNAME="fumes"
 PACKAGE_NAME="Fumes Client"
 PACKAGE_EMAIL="ufoot@ufoot.org"
-PACKAGE_URL="http:\\/\\/www.ufoot.org\\/liquidwar\\/v7\\/fumes"
+PACKAGE_URL="https:\\/\\/github.com\\/ufoot\\/fumes"
 VERSION_MAJOR=0
 VERSION_MINOR=1
 

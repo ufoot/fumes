@@ -24,7 +24,7 @@ namespace fmbuild {
 constexpr char PACKAGE_TARNAME[] = "fumes";
 constexpr char PACKAGE_NAME[] = "Fumes Client";
 constexpr char PACKAGE_EMAIL[] = "ufoot@ufoot.org";
-constexpr char PACKAGE_URL[] = "http://www.ufoot.org/liquidwar/v7/fumes";
+constexpr char PACKAGE_URL[] = "https://github.com/ufoot/fumes";
 }
 
 std::string fmbuild::get_package_tarname() {
