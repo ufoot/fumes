@@ -23,5 +23,8 @@ distclean-local:
 	find $(top_srcdir) . -name "*~" -exec rm -f "{}" \;
 	rm -f *.h $(top_srcdir)/*.h
 
+indent:
+	cd $(top_srcdir) && utils/indent.sh
+
 SUBDIRS = utils src doc
 

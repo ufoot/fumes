@@ -20,6 +20,7 @@
 #include "fmsys.hpp"
 
 #include <iostream>
+#include <mutex>
 #include <chrono>
 #include <ctime>
 #include <cstring>
@@ -50,8 +51,9 @@ constexpr log_priority FILE_PRIORITY = log_priority::DEBUG;
 constexpr log_priority SYSLOG_PRIORITY = log_priority::WARNING;
 constexpr log_priority FLUSH_PRIORITY = log_priority::NOTICE;
 
-static log_file global_log_file(fmbuild::get_package_tarname());
-static log_syslog global_log_syslog(fmbuild::get_package_tarname());
+static log_file global_log_file{fmbuild::get_package_tarname()};
+static log_syslog global_log_syslog{fmbuild::get_package_tarname()};
+static std::mutex global_log_mutex;
 }
 
 std::string fmsys::log_setup(const std::string& program) {
@@ -103,6 +105,8 @@ void fmsys::log_proxy::process_output() {
   if (eol != std::string::npos) {
     auto output = (*message).str().substr(0, eol + 1);
     auto ps = log_priority_string(proxy_priority);
+
+    global_log_mutex.lock();
     if (proxy_priority <= fmsys::FILE_PRIORITY) {
       proxy_file.get_ostream() << proxy_file.file_prefix << ": "
                                << log_time(true) << " " << proxy_source_file
@@ -123,6 +127,8 @@ void fmsys::log_proxy::process_output() {
       std::cerr.flush();
     }
     (*message).str((*message).str().substr(eol + 1, std::string::npos));
+    global_log_mutex.unlock();
+
     process_output();
   }
 }
