@@ -69,6 +69,17 @@ class log_file {
 class log_syslog {
  public:
   log_syslog(const std::string& program);
+  /// No default constructor.
+  log_syslog() = delete;
+  /// No copy constructor.
+  log_syslog(const log_syslog& other) = delete;
+  /// No move constructor.
+  log_syslog(log_syslog&& other) = delete;
+  /// No copy assignment.
+  log_syslog& operator=(const log_syslog& other) = delete;
+  /// No move assignment.
+  log_syslog& operator=(log_syslog&& other) = delete;
+  /// Destructor.
   ~log_syslog();
 };
 
