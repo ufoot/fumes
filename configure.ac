@@ -109,6 +109,14 @@ if test x${fm_doxygen} != xyes ; then
 fi
 AM_CONDITIONAL(FM_DOXYGEN, test x${fm_doxygen} = xyes)
 
+AC_ARG_ENABLE([vapor], AC_HELP_STRING([--enable-vapor=PATH-TO-VAPOR-SRCDIR],[specify the vapor toolkit source tree http://github.com/ufoot/vapor]), [FM_VAPOR_SRCDIR=$enableval], [FM_VAPOR_SRCDIR=../vapor])
+if test -f ${FM_VAPOR_SRCDIR}/thrift/vpbusapi.thrift ; then
+    AC_MSG_NOTICE([vapor found in ${FM_VAPOR_SRCDIR}])
+else
+    AC_MSG_ERROR([unable to find vapor toolkit in ${FM_VAPOR_SRCDIR} (file "${FM_VAPOR_SRCDIR}/thrift/vpbusapi.thrift" should be readable)])
+fi
+AC_SUBST(FM_VAPOR_SRCDIR)
+
 dnl Generating files
 AC_CONFIG_FILES([Makefile
 		 utils/Makefile
